@@ -1,0 +1,35 @@
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	background: transparent linear-gradient(176deg, #29303E 0%, #120F23 100%) 0% 0% no-repeat padding-box;
+	color: #ffffff
+}
+
+input,
+select {
+	border-radius: 8px;
+	border: 1px solid white;
+	font-size: 20px;
+	float: left;
+	height: 48px;
+	font-weight: 100;
+	padding: 15px;
+	font-style: italic;
+	font-family: inherit;
+}
+
+#gerarPaymentToken {
+	margin-top: 32px;
+}
+
+code {
+	font-size: 13px;
+	padding: 15px;
+}
+
+code a {
+	text-decoration: none;
+}

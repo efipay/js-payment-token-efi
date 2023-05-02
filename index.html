@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="favicon" href="./assets/img/favicon.png" rel="shortcut icon" type="image/png">
+    <title>Exemplo Payment Token | Efí</title>
+
+    <!-- CSS -->
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/css/custom.css" rel="stylesheet">
+
+    <!-- Script  -->
+    <script type="module" src="./lib/payment-token-efi.min.js"></script>
+
+    <script>
+
+
+        window.onload = function () { // Aguarda o carregamento da página para iniciar os scripts
+
+            // Configuração
+            var inputIdentificadorConta = document.getElementById("identificadorConta");
+            var inputValorTotal = document.getElementById("valorTotal");
+            // Dados cartão
+            var inputNumeroCartao = document.getElementById("numeroCartao");
+            var inputBandeira = document.getElementById("bandeira");
+            var inputMesVencimento = document.getElementById("mesVencimento");
+            var inputAnoVencimento = document.getElementById("anoVencimento");
+            var inputCvv = document.getElementById("cvv");
+            // Resultados
+            var inputParcelas = document.getElementById("opcoesParcelamento");
+            var inputPaymentToken = document.getElementById("paymentToken");
+            var inputmascaraCartao = document.getElementById("mascaraCartao");
+            // Botão de acionamento
+            var btnGerarToken = document.getElementById("gerarPaymentToken");
+
+
+            numeroCartao.addEventListener("input", function () {
+
+                /*
+                * Identifica a bandeira a partir do número do cartão
+                * @params { numeroCartao }
+                */
+                try {
+                    EfiJs.CreditCard
+                        .debugger(false)
+                        .setCardNumber(inputNumeroCartao.value)
+                        .verifyCardBrand()
+                        .then(bandeira => {
+                            inputBandeira.value = bandeira;
+
+                            if (bandeira !== 'undefined') { // Se encontrar uma bandeira válida, e aciona a função para buscar as opções de parcelamento
+                                buscarParcelamemto(bandeira);
+                            }
+                        });
+                } catch (error) {
+                    alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                    console.warn(`Algo deu errado ao verificar a bandeira.\n ${error}`);
+                }
+                /*
+                * FIM - Identifica a bandeira a partir do número do cartão
+                */
+            });
+
+
+            function buscarParcelamemto(bandeira) {
+
+                /*
+                * Retorna as informações de parcelamento
+                * @params { identificadorConta, ambiente, bandeira, valorTotal }
+                */
+                try {
+                    EfiJs.CreditCard
+                        .debugger(false)
+                        .setAccount(inputIdentificadorConta.value)
+                        .setEnvironment('production') // 'production' or 'homologation'
+                        .setBrand(bandeira)
+                        .setTotal(inputValorTotal.value)
+                        .getInstallments()
+                        .then(arrayParcelas => {
+                            console.log('Parcelas', arrayParcelas)
+                            let opcoes = '<option value="0">Escolha como deseja pagar</option>';
+
+                            for (let index = 0; index < arrayParcelas.installments.length; index++) {
+                                opcoes += `<option value="${arrayParcelas.installments[index].installment}">${arrayParcelas.installments[index].installment} x de R$${arrayParcelas.installments[index].currency} ${arrayParcelas.installments[index].has_interest === false ? "sem juros" : ""}</option>`;
+                            }
+                            inputParcelas.innerHTML = opcoes;
+                        }).catch(err => {
+                            alert(`Erro ao buscar as parcelas!\n\nCódigo: ${err.codigo}\nNome: ${err.nome}\nMensagem: ${err.mensagem}`);
+                            throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
+                        });
+                } catch (error) {
+                    alert(`Erro ao buscar as parcelas!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                    throw new Error(`Something went wrong.\n ${error}`);
+                }
+
+                /*
+                 * FIM - Retorna as informações de parcelamento
+                 */
+            }
+
+
+            btnGerarToken.addEventListener("click", function () {
+                btnGerarToken.classList.add('disabled');
+
+                btnGerarToken.innerHTML = '<div class="spinner-border spinner-border-sm text-info" role="status"> <span class="visually-hidden">Loading...</span></div>';
+
+                /*
+                * Retorna o payment_token e card_mask
+                * @params { identificadorConta, ambiente, {bandeira, numeroCartao, cvv, mesVencimento, anoVencimento, reuse} }
+                */
+                try {
+                    EfiJs.CreditCard
+                        .debugger(false)
+                        .setAccount(inputIdentificadorConta.value)
+                        .setEnvironment('production') // 'production' or 'homologation'
+                        .setCreditCardData({
+                            brand: inputBandeira.value,
+                            number: inputNumeroCartao.value,
+                            cvv: inputCvv.value,
+                            expirationMonth: inputMesVencimento.value,
+                            expirationYear: inputAnoVencimento.value,
+                            reuse: false
+                        })
+                        .getPaymentToken()
+                        .then(dados => {
+                            let payment_token = dados.payment_token;
+                            let card_mask = dados.card_mask;
+
+                            inputPaymentToken.value = payment_token;
+                            mascaraCartao.value = card_mask;
+
+                            btnGerarToken.classList.remove('btn-primary');
+                            btnGerarToken.classList.add('btn-success');
+                            btnGerarToken.innerHTML = 'Gerar novamente';
+                            btnGerarToken.classList.remove('disabled');
+                        }).catch(err => {
+                            alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${err.codigo}\nNome: ${err.nome}\nMensagem: ${err.mensagem}`);
+                            btnGerarToken.innerHTML = 'Gerar payment_token';
+                            btnGerarToken.classList.remove('disabled');
+                            throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
+                        });
+                } catch (error) {
+                    alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                    btnGerarToken.innerHTML = 'Gerar payment_token';
+                    btnGerarToken.classList.remove('disabled');
+                    throw new Error(`Something went wrong.\n ${error}`);
+                }
+                /*
+                 * FIM - Retorna o payment_token e card_mask
+                 */
+            });
+
+            inputValorTotal.addEventListener("input", function () {
+                buscarParcelamemto(inputBandeira.value);
+            });
+
+            inputIdentificadorConta.addEventListener("input", function () {
+                buscarParcelamemto(inputBandeira.value);
+            });
+
+            inputParcelas.addEventListener("change", function () {
+                btnGerarToken.classList.remove('disabled');
+            });
+        };
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header class="d-flex flex-wrap justify-content-center py-2 mb-2">
+            <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img style="height: 80px;" src="./assets/img/logo-ef.svg" alt="Logo Efí">
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a href="https://github.com/efipay/frontend-payment-token-efi" target="_blank"
+                        class="nav-link">Github</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://dev.sejaefi.com.br/docs/pagamento-com-cartao#1-obten%C3%A7%C3%A3o-do-payment_token"
+                        target="_blank" class="nav-link">Documentação</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://comunidade.sejaefi.com.br/" target="_blank" class="nav-link">Comunidade</a>
+                </li>
+            </ul>
+
+            <div class="py-2 text-center">
+                <h2>Página de exemplo - Gerar payment_token</h2>
+                <p class="lead">Um payment_token é um conjunto de caracteres gerado de forma segura pela API Efí que representa os
+                    dados do cartão de crédito do pagador.</p>
+            </div>
+        </header>
+
+        <main>
+
+            <form method="POST" action="./" novalidate>
+                <!-- Início - Configuração para funcionamento do script - Identificador de conta  -->
+                <!-- Veja aqui onde oncontrá-lo: https://sejaefi.link/rJeE-NNOm2 -->
+                <h4 class="mb-3">Configuração</h4>
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="identificadorConta" class="form-label">Identificador de conta
+                            <code>
+                                <a target="_blank" href="https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                              </svg>onde encontro?</a>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="identificadorConta" id="identificadorConta">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="valorTotal" class="form-label">Valor total
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="(Integer) Ex: '24990' equivale a R$249,90">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                              </svg>
+                            </code>
+                        </label>
+                        <input type="number" class="form-control" name="valorTotal" id="valorTotal" value="24990">
+                    </div>
+                </div>
+                <!-- Fim - Configuração para funcionamento do script - Identificador de conta  -->
+
+                <hr>
+
+                <!-- Início - Inputs com informações do cartão de crédito  -->
+                <h4 class="mb-3">Informação do cartão
+                    <code>
+                        <a target="_blank" href="https://www.4devs.com.br/gerador_de_numero_cartao_credito"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                      </svg>cartão fictício</a>
+                    </code>
+                </h4>
+                <div class="row gy-3">
+                    <div class="col-md-7">
+                        <label for="numeroCartao" class="form-label">Número do cartão
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="(String - 'XXXXXXXXXXXXXXXX')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                            </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="numeroCartao" id="numeroCartao">
+                    </div>
+
+                    <div class="col-md-5">
+                        <!-- Bandeira será preenchida dinamicamente de acordo com o número do cartão informado -->
+                        <label for="bandeira" class="form-label">Bandeira
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="(String - 'visa', 'mastercard', 'amex', 'elo', 'hipercard') Obtida a partir do número do cartão"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                              </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="bandeira" id="bandeira" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="mesVencimento" class="form-label">Mês de vencimento
+                            <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - 'MM')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                          </svg>
+                        </code>
+                        </label>
+                        <select class="form-select" name="mesVencimento" id="mesVencimento">
+                            <option selected>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="anoVencimento" class="form-label">Ano de vencimento
+                            <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - 'YYYY')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <select class="form-select" name="anoVencimento" id="anoVencimento">
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option selected>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                            <option>2029</option>
+                            <option>2030</option>
+                            <option>2031</option>
+                            <option>2032</option>
+                            <option>2033</option>
+                            <option>2034</option>
+                            <option>2035</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="cvv" class="form-label">Código de segurança (cvv)
+                            <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - '123')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="cvv" id="cvv">
+                    </div>
+                </div>
+                <!-- Fim - Inputs com informações do cartão de crédito  -->
+
+                <hr>
+
+                <!-- Início - Informação de parcelamento e botão para acionar a geração do payment_token   -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="opcoesParcelamento" class="form-label">Opções de pagamento
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Obtida quando definida a bandeira">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <select class="form-select" id="opcoesParcelamento" name="opcoesParcelamento">
+                            <option value="0">Digite o número do cartão</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="w-100 btn btn-primary btn-lg disabled" id="gerarPaymentToken" type="button">Gerar
+                            payment_token</button>
+                    </div>
+                </div>
+                <!-- Fim - Informação de parcelamento e botão para acionar a geração do payment_token -->
+
+                <hr>
+
+                <div class="row g-3">
+                    <h4 class="mb-3">Informações <code data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Obtidas após execução das funções acionadas pelo botão">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                            </svg>
+                        </code>
+                    </h4>
+                    <div class="col-md-6"> <!-- Input que receberá o payment_token gerado -->
+                        <label for="paymentToken" class="form-label">Payment Token a ser gerado</label>
+                        <input type="text" class="form-control" name="paymentToken" id="paymentToken" readonly>
+                    </div>
+
+                    <div class="col-md-6"> <!-- Input que receberá o card_mask gerado -->
+                        <label for="mascaraCartao" class="form-label">Máscara do cartão de crédito</label>
+                        <input type="text" class="form-control" name="mascaraCartao" id="mascaraCartao" readonly>
+                    </div>
+                </div>
+
+                <br>
+            </form>
+        </main>
+</body>
+
+</html>
