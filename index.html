@@ -36,27 +36,29 @@
             var btnGerarToken = document.getElementById("gerarPaymentToken");
 
 
-            numeroCartao.addEventListener("input", function () {
+            inputNumeroCartao.addEventListener("input", function () {
 
                 /*
                 * Identifica a bandeira a partir do número do cartão
                 * @params { numeroCartao }
                 */
-                try {
-                    EfiJs.CreditCard
-                        .debugger(false)
-                        .setCardNumber(inputNumeroCartao.value)
-                        .verifyCardBrand()
-                        .then(bandeira => {
-                            inputBandeira.value = bandeira;
+                if (inputNumeroCartao.value.length >= 16) {
+                    try {
+                        EfiJs.CreditCard
+                            .debugger(false)
+                            .setCardNumber(inputNumeroCartao.value)
+                            .verifyCardBrand()
+                            .then(bandeira => {
+                                inputBandeira.value = bandeira;
 
-                            if (bandeira !== 'undefined') { // Se encontrar uma bandeira válida, e aciona a função para buscar as opções de parcelamento
-                                buscarParcelamemto(bandeira);
-                            }
-                        });
-                } catch (error) {
-                    alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
-                    console.warn(`Algo deu errado ao verificar a bandeira.\n ${error}`);
+                                if (bandeira !== 'undefined') { // Se encontrar uma bandeira válida, e aciona a função para buscar as opções de parcelamento
+                                    buscarParcelamemto(bandeira);
+                                }
+                            });
+                    } catch (error) {
+                        alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                        console.warn(`Algo deu errado ao verificar a bandeira.\n ${error}`);
+                    }
                 }
                 /*
                 * FIM - Identifica a bandeira a partir do número do cartão
@@ -153,11 +155,15 @@
             });
 
             inputValorTotal.addEventListener("input", function () {
-                buscarParcelamemto(inputBandeira.value);
+                if (inputIdentificadorConta.value.length === 32 && inputNumeroCartao.value.length >= 16 && inputValorTotal.value.length >= 3) {
+                    buscarParcelamemto(inputBandeira.value);
+                }
             });
 
             inputIdentificadorConta.addEventListener("input", function () {
-                buscarParcelamemto(inputBandeira.value);
+                if (inputIdentificadorConta.value.length === 32 && inputNumeroCartao.value.length >= 16) {
+                    buscarParcelamemto(inputBandeira.value);
+                }
             });
 
             inputParcelas.addEventListener("change", function () {
@@ -195,7 +201,8 @@
 
             <div class="py-2 text-center">
                 <h2>Página de exemplo - Gerar payment_token</h2>
-                <p class="lead">Um payment_token é um conjunto de caracteres gerado de forma segura pela API Efí que representa os
+                <p class="lead">Um payment_token é um conjunto de caracteres gerado de forma segura pela API Efí que
+                    representa os
                     dados do cartão de crédito do pagador.</p>
             </div>
         </header>
