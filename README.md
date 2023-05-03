@@ -7,12 +7,12 @@
 
 # Exemplo
 
-[Clique aqui](https://efipay.github.io/frontend-payment-token-efi/) para ver um modelo prático que utiliza o módulo JavaScript.
+<a href='https://efipay.github.io/frontend-payment-token-efi/' target ='_blank'>Clique aqui</a> para ver um modelo prático que utiliza o módulo JavaScript.
 
 ___
 
 ## **Instalação**
-Realize o [download da biblioca](https://raw.githubusercontent.com/efipay/frontend-payment-token-efi/main/lib/payment-token-efi.min.js) localizada em `/lib/payment-token-efi.min.js`, e posteriormente a importação do múdulo para seu projeto.
+Realize o <a href='https://raw.githubusercontent.com/efipay/frontend-payment-token-efi/main/lib/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/lib/payment-token-efi.min.js`, e posteriormente a importação do múdulo para seu projeto.
 ```javascript
 <script type="module" src="./lib/payment-token-efi.min"></script>
 ```
@@ -23,7 +23,7 @@ ___
 Este script permitirá executar 3 funções, para **identificar a bandeira** a partir do número do cartão, para **buscar as informações de parcelamento** de acordo com as configurações de recebimento em sua conta, e para **gerar o payment_token e card_mask** de acordo com os dados do cartão. Abaixo você encontra mais detalhes sobre estas funções.
 
 **Observação:**
-	Para utilizar é necessário passar código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Essa informação você pode obter em sua conta digital, no menu `API > Introdução > Identificador de Conta`. [Veja onde]().
+	Para utilizar é necessário passar código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Essa informação você pode obter em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde</a>.
 
 <br>
 
@@ -145,14 +145,14 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 
 ## **Documentação Adicional**
 
-[Acesse nossa documentação técnica](https://sejaefi.com.br/api/) para ver todas as informações da geração do payment_token e mais detalhes das APIs.
+<a href='https://sejaefi.com.br/api/' target='_blank'>Acesse nossa documentação técnica</a> para ver todas as informações da geração do payment_token e mais detalhes das APIs.
 
-Se você ainda não tem uma conta digital da Efí, [abra a sua agora](https://sejaefi.com.br/)!
+Se você ainda não tem uma conta digital da Efí, <a href='https://sejaefi.com.br/' target='_blank'>abra a sua agora</a>!
 
 ---
 
 ## **Comunidade e suporte**
-Conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e muito mais) com a ajuda da maior comunidade de integradores do Brasil. [Faça parte da comunidade Efí](https://comunidade.sejaefi.com.br/).
+Conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e muito mais) com a ajuda da maior comunidade de integradores do Brasil. <a href='https://comunidade.sejaefi.com.br/' target='_blank'>Faça parte da comunidade Efí.
 
 ---
 
