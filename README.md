@@ -12,10 +12,18 @@
 ___
 
 ## **Instalação**
-Realize o <a href='https://raw.githubusercontent.com/efipay/script-payment-token-efi/main/lib/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/lib/payment-token-efi.min.js`, e posteriormente a importação do múdulo para seu projeto.
+Realize o <a href='https://raw.githubusercontent.com/efipay/script-payment-token-efi/main/dist/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/dist/payment-token-efi.min.js`, ou importação através do link do CDN.
+
+**Importação local**
 ```javascript
-<script type="module" src="./lib/payment-token-efi.min"></script>
+<script type="module" src="./dist/payment-token-efi.min"></script>
 ```
+
+**Importação por CDN**
+```javascript
+<script type="module" src="https://cdn.jsdelivr.net/gh/efipay/script-payment-token-efi/dist/payment-token-efi.min.js"></script>
+```
+
 ___
 
 ## **Utilização**
@@ -31,8 +39,6 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 	> **Entrada:** número do cartão (string)
 
 	```html
-	<script type="module" src="./lib/payment-token-efi.min"></script>
-
 	<script>
 		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
 			try {
@@ -66,8 +72,6 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 * ### **Buscar as informações de parcelamento**
 	> **Entrada:** identificador de conta (string), ambiente (string), bandeira (string), valor (string ou integer)
 	```html
-	<script type="module" src="./lib/payment-token-efi.min"></script>
-
 	<script>
 		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
 			try {
@@ -100,8 +104,6 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 * ### **Gerar o payment_token e card_mask**
 	> **Entrada:** identificador de conta (string), ambiente (string), dados do cartão (object) {brand (string), number (string), cvv (string), expirationMonth (string), expirationYear (string), reuse (boolean)}
 	```html
-	<script type="module" src="./lib/payment-token-efi.min"></script>
-
 	<script>
 		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
 			try {
