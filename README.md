@@ -7,12 +7,12 @@
 
 # Exemplo
 
-<a href='https://efipay.github.io/frontend-payment-token-efi/' target ='_blank'>Clique aqui</a> para ver um modelo prático que utiliza o módulo JavaScript.
+<a href='https://efipay.github.io/script-payment-token-efi/' target ='_blank'>Clique aqui</a> para ver um modelo prático que utiliza o módulo JavaScript.
 
 ___
 
 ## **Instalação**
-Realize o <a href='https://raw.githubusercontent.com/efipay/frontend-payment-token-efi/main/lib/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/lib/payment-token-efi.min.js`, e posteriormente a importação do múdulo para seu projeto.
+Realize o <a href='https://raw.githubusercontent.com/efipay/script-payment-token-efi/main/lib/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/lib/payment-token-efi.min.js`, e posteriormente a importação do múdulo para seu projeto.
 ```javascript
 <script type="module" src="./lib/payment-token-efi.min"></script>
 ```
