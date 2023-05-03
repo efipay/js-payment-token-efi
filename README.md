@@ -38,7 +38,7 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 			try {
 				EfiJs.CreditCard
 					.debugger(false)
-					.setCardNumber('4716515330149034')
+					.setCardNumber('4485785674290087')
 					.verifyCardBrand()
 					.then(brand => {
 						console.log('Bandeira: ', brand);
@@ -73,7 +73,7 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 			try {
 				EfiJs.CreditCard
 					.debugger(false)
-					.setAccount('b63f46b3330a81440800f9a29cae17c0')
+					.setAccount('Identificador_de_conta_aqui')
 					.setEnvironment('production') // 'production' or 'homologation'
 					.setBrand('visa')
 					.setTotal('28990')
@@ -107,15 +107,15 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 			try {
 				EfiJs.CreditCard
 					.debugger(false)
-					.setAccount('b63f46b3330a81440800f9a29cae17c0')
+					.setAccount('Identificador_de_conta_aqui')
 					.setEnvironment('production') // 'production' or 'homologation'
 					.setCreditCardData({
 						brand: 'visa',
-						number: '4012 0010 3844 3335',
+						number: '4485785674290087',
 						cvv: '123',
 						expirationMonth: '05',
 						expirationYear: '2029',
-						reuse: true
+						reuse: false
 					})
 					.getPaymentToken()
 					.then(data => {
@@ -143,15 +143,16 @@ Este script permitirá executar 3 funções, para **identificar a bandeira** a p
 
 ---
 
-## **Comunidade e suporte**
-Conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e muito mais) com a ajuda da maior comunidade de integradores do Brasil. [Faça parte da comunidade Efí](https://comunidade.sejaefi.com.br/).
-
----
 ## **Documentação Adicional**
 
-A documentação completa com todas as informações da geração do payment_token e os detalhes das APIs, está disponível em: https://dev.gerencianet.com.br/.
+[Acesse nossa documentação técnica](https://sejaefi.com.br/api/) para ver todas as informações da geração do payment_token e mais detalhes das APIs.
 
 Se você ainda não tem uma conta digital da Efí, [abra a sua agora](https://sejaefi.com.br/)!
+
+---
+
+## **Comunidade e suporte**
+Conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e muito mais) com a ajuda da maior comunidade de integradores do Brasil. [Faça parte da comunidade Efí](https://comunidade.sejaefi.com.br/).
 
 ---
 
