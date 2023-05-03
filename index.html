@@ -81,7 +81,6 @@
                         .setTotal(inputValorTotal.value)
                         .getInstallments()
                         .then(arrayParcelas => {
-                            console.log('Parcelas', arrayParcelas)
                             let opcoes = '<option value="0">Escolha como deseja pagar</option>';
 
                             for (let index = 0; index < arrayParcelas.installments.length; index++) {
