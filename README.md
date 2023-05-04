@@ -5,12 +5,12 @@ Este módulo JavaScript permite a criptografia dos dados do cartão diretamente 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente pode aumentar a segurança da transação e proteger as informações do cartão contra interceptações maliciosas.
 
 ### **Exemplo**
-Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/script-payment-token-efi/' target ='_blank'>Clique aqui</a>.
+Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/js-payment-token-efi/' target ='_blank'>Clique aqui</a>.
 
 ___
 
 ## **Instalação**
-Realize o <a href='https://raw.githubusercontent.com/efipay/script-payment-token-efi/main/dist/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/dist/payment-token-efi.min.js`, ou importação através do link do CDN.
+Realize o <a href='https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/dist/payment-token-efi.min.js' target ='_blank'>download da biblioca</a> localizada em `/dist/payment-token-efi.min.js`, ou importação através do link do CDN.
 
 **Importação local**
 ```javascript
@@ -19,7 +19,7 @@ Realize o <a href='https://raw.githubusercontent.com/efipay/script-payment-token
 
 **Importação por CDN**
 ```javascript
-<script type="module" src="https://cdn.jsdelivr.net/gh/efipay/script-payment-token-efi/dist/payment-token-efi.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/efipay/js-payment-token-efi/dist/payment-token-efi.min.js"></script>
 ```
 
 ___
