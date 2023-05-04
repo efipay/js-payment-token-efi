@@ -56,7 +56,7 @@
                                 }
                             });
                     } catch (error) {
-                        alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                        alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                         console.warn(`Algo deu errado ao verificar a bandeira.\n ${error}`);
                     }
                 }
@@ -88,11 +88,11 @@
                             }
                             inputParcelas.innerHTML = opcoes;
                         }).catch(err => {
-                            alert(`Erro ao buscar as parcelas!\n\nCódigo: ${err.codigo}\nNome: ${err.nome}\nMensagem: ${err.mensagem}`);
+                            alert(`Erro ao buscar as parcelas!\n\nCódigo: ${err.code}\nNome: ${err.error}\nMensagem: ${err.error_description}`);
                             throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
                         });
                 } catch (error) {
-                    alert(`Erro ao buscar as parcelas!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                    alert(`Erro ao buscar as parcelas!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                     throw new Error(`Something went wrong.\n ${error}`);
                 }
 
@@ -137,13 +137,13 @@
                             btnGerarToken.innerHTML = 'Gerar novamente';
                             btnGerarToken.classList.remove('disabled');
                         }).catch(err => {
-                            alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${err.codigo}\nNome: ${err.nome}\nMensagem: ${err.mensagem}`);
+                            alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${err.code}\nNome: ${err.error}\nMensagem: ${err.error_description}`);
                             btnGerarToken.innerHTML = 'Gerar payment_token';
                             btnGerarToken.classList.remove('disabled');
                             throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
                         });
                 } catch (error) {
-                    alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${error.codigo}\nNome: ${error.nome}\nMensagem: ${error.mensagem}`);
+                    alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                     btnGerarToken.innerHTML = 'Gerar payment_token';
                     btnGerarToken.classList.remove('disabled');
                     throw new Error(`Something went wrong.\n ${error}`);
