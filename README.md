@@ -3,11 +3,12 @@
 
 ## O que é?
 
-> Módulo Javascript que permite a criptografia dos dados do cartão do cartão a partir do browser do cliente para gerar o payment_token, identificar a bandeira do cartão e obter informações de parcelamento.
+Este módulo JavaScript permite a criptografia dos dados do cartão diretamente no navegador do cliente, gerando o payment_token, identificando a bandeira do cartão e obtendo informações de parcelamento.
+
+Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente pode aumentar a segurança da transação e proteger as informações do cartão contra interceptações maliciosas.
 
 # Exemplo
-
-<a href='https://efipay.github.io/script-payment-token-efi/' target ='_blank'>Clique aqui</a> para ver um modelo prático que utiliza o módulo JavaScript.
+Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/script-payment-token-efi/' target ='_blank'>Clique aqui</a>.
 
 ___
 
@@ -28,10 +29,9 @@ ___
 
 ## **Utilização**
 
-Este script permitirá executar 3 funções, para **identificar a bandeira** a partir do número do cartão, para **buscar as informações de parcelamento** de acordo com as configurações de recebimento em sua conta, e para **gerar o payment_token e card_mask** de acordo com os dados do cartão. Abaixo você encontra mais detalhes sobre estas funções.
+Este script oferece três funções para manipulação de dados de cartão de crédito. A primeira função permite <ins>**identificar a bandeira**</ins> do cartão a partir do seu número. A segunda função <ins>**busca informações de parcelamento**</ins> de acordo com as configurações de recebimento em sua conta. Por fim, a terceira função <ins>**gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)**</ins> com base nos dados do cartão.
 
-**Observação:**
-	Para utilizar é necessário passar código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Essa informação você pode obter em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde</a>.
+Para utilizar esse script, é necessário passar o código Identificador de Conta (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde encontrá-la</a>. Certifique-se de ter essa informação disponível ao utilizar as funções do script.
 
 <br>
 
