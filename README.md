@@ -1,13 +1,10 @@
 # Script payment_token cartão de crédito | Efí
 
-
-## O que é?
-
 Este módulo JavaScript permite a criptografia dos dados do cartão diretamente no navegador do cliente, gerando o payment_token, identificando a bandeira do cartão e obtendo informações de parcelamento.
 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente pode aumentar a segurança da transação e proteger as informações do cartão contra interceptações maliciosas.
 
-# Exemplo
+### **Exemplo**
 Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/script-payment-token-efi/' target ='_blank'>Clique aqui</a>.
 
 ___
@@ -36,110 +33,167 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 <br>
 
 * ### **Identificar a bandeira**
-	> **Entrada:** número do cartão (string)
+	* **Dados de entrada:**
 
-	```html
-	<script>
-		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-			try {
-				EfiJs.CreditCard
-					.debugger(false)
-					.setCardNumber('4485785674290087')
-					.verifyCardBrand()
-					.then(brand => {
-						console.log('Bandeira: ', brand);
+		| Parâmetro/Método  | Descrição                            | Tipo     |
+		|-------------------|--------------------------------------|----------|
+		| setCardNumber     | Número do cartão de crédito          | string   |
 
-						if (brand !== 'undefined') {
-							// Exemplo: executar a função para gerar o payment_token com a bandeira identificada
-						}
-					}).catch(err => {
-						console.log('Código: ', err.codigo);
-						console.log('Nome: ', err.nome);
-						console.log('Mensagem: ', err.mensagem);
-					});
-			} catch (error) {
-				console.log('Código: ', error.codigo);
-				console.log('Nome: ', error.nome);
-				console.log('Mensagem: ', error.mensagem);
-			}
-		};
-	</script>
-	```
-	> **Saída (string):** `"undefined"`, `"unsupported"`, `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`. Em caso de erro, será retornado o objeto com os parâmetros `"codigo"`, `"nome"` e `"mensagem"`.
+		```html
+		<script>
+			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
+				try {
+					EfiJs.CreditCard
+						.debugger(false)
+						.setCardNumber('4485785674290087')
+						.verifyCardBrand()
+						.then(brand => {
+							console.log('Bandeira: ', brand);
+
+							if (brand !== 'undefined') {
+								// Exemplo: executar a função para gerar o payment_token com a bandeira identificada
+							}
+						}).catch(err => {
+							console.log('Código: ', err.code);
+							console.log('Nome: ', err.error);
+							console.log('Mensagem: ', err.error_description);
+						});
+				} catch (error) {
+					console.log('Código: ', error.code);
+					console.log('Nome: ', error.error);
+					console.log('Mensagem: ', error.error_description);
+				}
+			};
+		</script>
+		```
+
+	* **Dados de saída:**
+
+		| Parâmetro  | Descrição                         | Tipo     |
+		|------------|-----------------------------------|----------|
+		| brand      | Brandeira do cartão. `"undefined"`, `"unsupported"`, `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`           | string   |
+
+
 
 <br>
 
 * ### **Buscar as informações de parcelamento**
-	> **Entrada:** identificador de conta (string), ambiente (string), bandeira (string), valor (string ou integer)
-	```html
-	<script>
-		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-			try {
-				EfiJs.CreditCard
-					.debugger(false)
-					.setAccount('Identificador_de_conta_aqui')
-					.setEnvironment('production') // 'production' or 'homologation'
-					.setBrand('visa')
-					.setTotal('28990')
-					.getInstallments()
-					.then(installments => {
-						console.log('Parcelas', installments);
-					}).catch(err => {
-						console.log('Código: ', err.codigo);
-						console.log('Nome: ', err.nome);
-						console.log('Mensagem: ', err.mensagem);
-					});
-			} catch (error) {
-				console.log('Código: ', error.codigo);
-				console.log('Nome: ', error.nome);
-				console.log('Mensagem: ', error.mensagem);
-			}
-		};
-	</script>
-	```
-	> **Saída (object):** `{"rate": 0,"name": "brand","installments": [{"installment": 1,"has_interest": false,"value": 500,"currency": "5,00","interest_percentage": 0}]}`. Em caso de erro, será retornado o objeto com os parâmetros `"codigo"`, `"nome"` e `"mensagem"`.
+
+	* **Dados de entrada:**
+
+		| Parâmetro/Método  | Descrição                               | Tipo     |
+		|---------------|---------------------------------------------|----------|
+		| setAccount | Identificador de conta                         | string   |
+		| setEnvironment | Ambiente. `"production"` ou `"homologation"`   | string   |
+		| setBrand | Bandeira do cartão `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   |
+		| setTotal | Valor total                                     | Integer   |
+
+		```html
+		<script>
+			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
+				try {
+					EfiJs.CreditCard
+						.debugger(false)
+						.setAccount('Identificador_de_conta_aqui')
+						.setEnvironment('production') // 'production' or 'homologation'
+						.setBrand('visa')
+						.setTotal(28990)
+						.getInstallments()
+						.then(installments => {
+							console.log('Parcelas', installments);
+						}).catch(err => {
+							console.log('Código: ', err.code);
+							console.log('Nome: ', err.error);
+							console.log('Mensagem: ', err.error_description);
+						});
+				} catch (error) {
+					console.log('Código: ', error.code);
+					console.log('Nome: ', error.error);
+					console.log('Mensagem: ', error.error_description);
+				}
+			};
+		</script>
+		```
+
+	* **Dados de saída:**
+
+		| Parâmetro  | Descrição                         | Tipo     |
+		|------------|-----------------------------------|----------|
+		| installments | Array com as parcelas. `{"rate": 0,"name": "brand","installments": [{"installment": 1,"has_interest": false,"value": 500,"currency": "5,00","interest_percentage": 0}]}` | object   |
 
 <br>
 
 * ### **Gerar o payment_token e card_mask**
-	> **Entrada:** identificador de conta (string), ambiente (string), dados do cartão (object) {brand (string), number (string), cvv (string), expirationMonth (string), expirationYear (string), reuse (boolean)}
-	```html
-	<script>
-		window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-			try {
-				EfiJs.CreditCard
-					.debugger(false)
-					.setAccount('Identificador_de_conta_aqui')
-					.setEnvironment('production') // 'production' or 'homologation'
-					.setCreditCardData({
-						brand: 'visa',
-						number: '4485785674290087',
-						cvv: '123',
-						expirationMonth: '05',
-						expirationYear: '2029',
-						reuse: false
-					})
-					.getPaymentToken()
-					.then(data => {
-						const payment_token = data.payment_token;
-						const card_mask = data.card_mask;
+	
+	* **Dados de entrada:** número do cartão (string)
 
-						console.log('payment_token', payment_token);
-						console.log('card_mask', card_mask);
-					}).catch(err => {
-						console.log('Código: ', err.codigo);
-						console.log('Nome: ', err.nome);
-						console.log('Mensagem: ', err.mensagem);
-					});
-			} catch (error) {
-				console.log('Código: ', error.codigo);
-				console.log('Nome: ', error.nome);
-				console.log('Mensagem: ', error.mensagem);
-			}
-		};
-	</script>
-	```
-	> **Saída (object):** `{payment_token: "8000bc8035b8328cd121c1dc9f593e48e7030622", card_mask: "XXXXXXXXXXXX1179"}`. Em caso de erro, será retornado o objeto com os parâmetros `"codigo"`, `"nome"` e `"mensagem"`.
+		| Parâmetro/Método  | Descrição                                      | Tipo     |
+		|-------------------|------------------------------------------------|----------|
+		| setAccount        | Identificador de conta                         | string   |
+		| setEnvironment    | Ambiente. `"production"` ou `"homologation"`   | string   |
+		| setCreditCardData | Dados do cartão de crédito                     | object   |
+		|         -         | brand                                          | string   |
+		|         -         | number                                         | string   |
+		|         -         | cvv                                            | string   |
+		|         -         | expirationMonth 'MM'                           | string   |
+		|         -         | expirationYear  'YYYY'                         | string   |
+		|         -         | reuse                                          | boolean  |
+
+		```html
+		<script>
+			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
+				try {
+					EfiJs.CreditCard
+						.debugger(false)
+						.setAccount('Identificador_de_conta_aqui')
+						.setEnvironment('production') // 'production' or 'homologation'
+						.setCreditCardData({
+							brand: 'visa',
+							number: '4485785674290087',
+							cvv: '123',
+							expirationMonth: '05',
+							expirationYear: '2029',
+							reuse: false
+						})
+						.getPaymentToken()
+						.then(data => {
+							const payment_token = data.payment_token;
+							const card_mask = data.card_mask;
+
+							console.log('payment_token', payment_token);
+							console.log('card_mask', card_mask);
+						}).catch(err => {
+							console.log('Código: ', err.code);
+							console.log('Nome: ', err.error);
+							console.log('Mensagem: ', err.error_description);
+						});
+				} catch (error) {
+					console.log('Código: ', error.code);
+					console.log('Nome: ', error.error);
+					console.log('Mensagem: ', error.error_description);
+				}
+			};
+		</script>
+		```
+
+	* **Dados de saída:**
+
+		| Parâmetro      | Descrição                                                    | Tipo     |
+		|----------------|--------------------------------------------------------------|----------|
+		| payment_token  | Token de pagamento que representa o cartão utilizado         | string   |
+		| card_mask      | Máscara do cartão utilizado                                  | string   |
+
+
+
+  - #### **Dados de saída em caso de falha**
+  	Em caso de erro, será retornado o objeto com os parâmetros descritos abaixo.
+
+  	| Parâmetro | Descrição                                         | Tipo     |
+  	|-----------|---------------------------------------------------|----------|
+  	| code     | Código de erro para identificação.                 | string   |
+  	| error | Nome do erro.                                         | string   |
+  	| error_description | Mensagem detalhando o erro ocorrido.      | string   |
+
 
 <br>
 
