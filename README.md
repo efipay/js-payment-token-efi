@@ -4,7 +4,20 @@ Este módulo JavaScript permite a criptografia dos dados do cartão diretamente 
 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas.
 
-### **Exemplo**
+Ir para:
+- [**Exemplo**](#exemplo)
+- [**Instalação**](#instalação)
+- [**Utilização**](#utilização)
+    - [**Identificar a bandeira**](#identificar-a-bandeira)
+    - [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
+    - [**Gerar o payment_token e card_maska**](#gerar-o-payment_token-e-card_mask)
+- [**Documentação Adicional**](#documentação-adicional)
+- [**Comunidade e suporte**](#comunidade-e-suporte)
+- [**Licença**](#licença)
+
+___
+
+## **Exemplo**
 Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/js-payment-token-efi/' target ='_blank'>Clique aqui</a>.
 
 ___
