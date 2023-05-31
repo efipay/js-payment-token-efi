@@ -138,7 +138,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 * ### **Gerar o payment_token e card_mask**
 	
-	* **Dados de entrada:** número do cartão (string)
+	* **Dados de entrada:**
 
 		| Parâmetro/Método  | Descrição                                      | Tipo     |
 		|-------------------|------------------------------------------------|----------|
