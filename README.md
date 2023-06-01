@@ -27,12 +27,12 @@ Realize o <a href='https://raw.githubusercontent.com/efipay/js-payment-token-efi
 
 **Importação local**
 ```javascript
-<script type="module" src="./dist/payment-token-efi.min"></script>
+<script src="./dist/payment-token-efi.min"></script>
 ```
 
 **Importação por CDN**
 ```javascript
-<script type="module" src="https://cdn.jsdelivr.net/gh/efipay/js-payment-token-efi/dist/payment-token-efi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/efipay/js-payment-token-efi/dist/payment-token-efi.min.js"></script>
 ```
 
 ___
@@ -54,29 +54,26 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 		```html
 		<script>
-			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-				try {
-					EfiJs.CreditCard
-						.debugger(false)
-						.setCardNumber('4485785674290087')
-						.verifyCardBrand()
-						.then(brand => {
-							console.log('Bandeira: ', brand);
-
-							if (brand !== 'undefined') {
-								// Exemplo: executar a função para gerar o payment_token com a bandeira identificada
-							}
-						}).catch(err => {
-							console.log('Código: ', err.code);
-							console.log('Nome: ', err.error);
-							console.log('Mensagem: ', err.error_description);
-						});
-				} catch (error) {
-					console.log('Código: ', error.code);
-					console.log('Nome: ', error.error);
-					console.log('Mensagem: ', error.error_description);
-				}
-			};
+			try {
+				EfiJs.CreditCard
+					.debugger(false)
+					.setCardNumber('4485785674290087')
+					.verifyCardBrand()
+					.then(brand => {
+						console.log('Bandeira: ', brand);
+						if (brand !== 'undefined') {
+							// Exemplo: executar a função para gerar o payment_token com a bandeira identificada
+						}
+					}).catch(err => {
+						console.log('Código: ', err.code);
+						console.log('Nome: ', err.error);
+						console.log('Mensagem: ', err.error_description);
+					});
+			} catch (error) {
+				console.log('Código: ', error.code);
+				console.log('Nome: ', error.error);
+				console.log('Mensagem: ', error.error_description);
+			}
 		</script>
 		```
 
@@ -103,28 +100,26 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 		```html
 		<script>
-			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-				try {
-					EfiJs.CreditCard
-						.debugger(false)
-						.setAccount('Identificador_de_conta_aqui')
-						.setEnvironment('production') // 'production' or 'homologation'
-						.setBrand('visa')
-						.setTotal(28990)
-						.getInstallments()
-						.then(installments => {
-							console.log('Parcelas', installments);
-						}).catch(err => {
-							console.log('Código: ', err.code);
-							console.log('Nome: ', err.error);
-							console.log('Mensagem: ', err.error_description);
-						});
-				} catch (error) {
-					console.log('Código: ', error.code);
-					console.log('Nome: ', error.error);
-					console.log('Mensagem: ', error.error_description);
-				}
-			};
+			try {
+				EfiJs.CreditCard
+					.debugger(false)
+					.setAccount('Identificador_de_conta_aqui')
+					.setEnvironment('production') // 'production' or 'homologation'
+					.setBrand('visa')
+					.setTotal(28990)
+					.getInstallments()
+					.then(installments => {
+						console.log('Parcelas', installments);
+					}).catch(err => {
+						console.log('Código: ', err.code);
+						console.log('Nome: ', err.error);
+						console.log('Mensagem: ', err.error_description);
+					});
+			} catch (error) {
+				console.log('Código: ', error.code);
+				console.log('Nome: ', error.error);
+				console.log('Mensagem: ', error.error_description);
+			}
 		</script>
 		```
 
@@ -154,38 +149,35 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 		```html
 		<script>
-			window.onload = function () { // Permita a chamada da função somente após o carregamento da página
-				try {
-					EfiJs.CreditCard
-						.debugger(false)
-						.setAccount('Identificador_de_conta_aqui')
-						.setEnvironment('production') // 'production' or 'homologation'
-						.setCreditCardData({
-							brand: 'visa',
-							number: '4485785674290087',
-							cvv: '123',
-							expirationMonth: '05',
-							expirationYear: '2029',
-							reuse: false
-						})
-						.getPaymentToken()
-						.then(data => {
-							const payment_token = data.payment_token;
-							const card_mask = data.card_mask;
-
-							console.log('payment_token', payment_token);
-							console.log('card_mask', card_mask);
-						}).catch(err => {
-							console.log('Código: ', err.code);
-							console.log('Nome: ', err.error);
-							console.log('Mensagem: ', err.error_description);
-						});
-				} catch (error) {
-					console.log('Código: ', error.code);
-					console.log('Nome: ', error.error);
-					console.log('Mensagem: ', error.error_description);
-				}
-			};
+			try {
+				EfiJs.CreditCard
+					.debugger(false)
+					.setAccount('Identificador_de_conta_aqui')
+					.setEnvironment('production') // 'production' or 'homologation'
+					.setCreditCardData({
+						brand: 'visa',
+						number: '4485785674290087',
+						cvv: '123',
+						expirationMonth: '05',
+						expirationYear: '2029',
+						reuse: false
+					})
+					.getPaymentToken()
+					.then(data => {
+						const payment_token = data.payment_token;
+						const card_mask = data.card_mask;
+						console.log('payment_token', payment_token);
+						console.log('card_mask', card_mask);
+					}).catch(err => {
+						console.log('Código: ', err.code);
+						console.log('Nome: ', err.error);
+						console.log('Mensagem: ', err.error_description);
+					});
+			} catch (error) {
+				console.log('Código: ', error.code);
+				console.log('Nome: ', error.error);
+				console.log('Mensagem: ', error.error_description);
+			}
 		</script>
 		```
 

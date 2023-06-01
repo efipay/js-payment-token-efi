@@ -12,12 +12,12 @@
     <link href="./assets/css/custom.css" rel="stylesheet">
 
     <!-- Script  -->
-    <script type="module" src="./dist/payment-token-efi.min.js"></script>
+    <script src="./dist/payment-token-efi.min.js"></script>
 
     <script>
 
 
-        window.onload = function () { // Aguarda o carregamento da página para iniciar os scripts
+        document.addEventListener('DOMContentLoaded', () => { // Aguarda o carregamento da página para iniciar os scripts
 
             // Configuração
             var inputIdentificadorConta = document.getElementById("identificadorConta");
@@ -168,7 +168,7 @@
             inputParcelas.addEventListener("change", function () {
                 btnGerarToken.classList.remove('disabled');
             });
-        };
+        });
 
 
     </script>
