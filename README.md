@@ -5,15 +5,13 @@ Este módulo JavaScript permite a criptografia dos dados do cartão diretamente 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas.
 
 Ir para:
-- [**Exemplo**](#exemplo)
-- [**Instalação**](#instalação)
-- [**Utilização**](#utilização)
-    - [**Identificar a bandeira**](#identificar-a-bandeira)
-    - [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
-    - [**Gerar o payment_token e card_maska**](#gerar-o-payment_token-e-card_mask)
-- [**Documentação Adicional**](#documentação-adicional)
-- [**Comunidade e suporte**](#comunidade-e-suporte)
-- [**Licença**](#licença)
+- [Script payment\_token cartão de crédito | Efí](#script-payment_token-cartão-de-crédito--efí)
+	- [**Exemplo**](#exemplo)
+	- [**Instalação**](#instalação)
+	- [**Utilização**](#utilização)
+	- [**Documentação Adicional**](#documentação-adicional)
+	- [**Comunidade e suporte**](#comunidade-e-suporte)
+	- [**Licença**](#licença)
 
 ___
 
@@ -48,9 +46,10 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 * ### **Identificar a bandeira**
 	* **Dados de entrada:**
 
-		| Parâmetro/Método  | Descrição                            | Tipo     |
-		|-------------------|--------------------------------------|----------|
-		| setCardNumber     | Número do cartão de crédito          | string   |
+		| Parâmetro/Método  | Descrição                            | Tipo     | Obrigatório |
+		|-------------------|--------------------------------------|----------|-------------|
+		| setCardNumber     | Número do cartão de crédito          | string   | Sim         |
+		| debugger          | Depurador de código                  | boolean  | Não         |
 
 		```html
 		<script>
@@ -91,12 +90,13 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 	* **Dados de entrada:**
 
-		| Parâmetro/Método  | Descrição                               | Tipo     |
-		|---------------|---------------------------------------------|----------|
-		| setAccount | Identificador de conta                         | string   |
-		| setEnvironment | Ambiente. `"production"` ou `"homologation"`   | string   |
-		| setBrand | Bandeira do cartão `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   |
-		| setTotal | Valor total                                     | Integer   |
+		| Parâmetro/Método  | Descrição                               | Tipo     | Obrigatório |
+		|---------------|---------------------------------------------|----------|-------------|
+		| setAccount | Identificador de conta                         | string   | Sim         |
+		| setEnvironment | Ambiente. `"production"` ou `"homologation"`   | string   | Sim     |
+		| setBrand | Bandeira do cartão `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   | Sim  |
+		| setTotal | Valor total                                     | Integer   | Sim         |
+		| debugger | Depurador de código                             | boolean   | Não         |
 
 		```html
 		<script>
@@ -135,17 +135,18 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 	
 	* **Dados de entrada:**
 
-		| Parâmetro/Método  | Descrição                                      | Tipo     |
-		|-------------------|------------------------------------------------|----------|
-		| setAccount        | Identificador de conta                         | string   |
-		| setEnvironment    | Ambiente. `"production"` ou `"homologation"`   | string   |
-		| setCreditCardData | Dados do cartão de crédito                     | object   |
-		|         -         | brand                                          | string   |
-		|         -         | number                                         | string   |
-		|         -         | cvv                                            | string   |
-		|         -         | expirationMonth 'MM'                           | string   |
-		|         -         | expirationYear  'YYYY'                         | string   |
-		|         -         | reuse                                          | boolean  |
+		| Parâmetro/Método  | Descrição                                      | Tipo     | Obrigatório |
+		|-------------------|------------------------------------------------|----------|-------------|
+		| setAccount        | Identificador de conta                         | string   | Sim         |
+		| setEnvironment    | Ambiente. `"production"` ou `"homologation"`   | string   | Sim         |
+		| setCreditCardData | Dados do cartão de crédito                     | object   | Sim         |
+		|         -         | brand                                          | string   | Sim         |
+		|         -         | number                                         | string   | Sim         |
+		|         -         | cvv                                            | string   | Sim         |
+		|         -         | expirationMonth 'MM'                           | string   | Sim         |
+		|         -         | expirationYear  'YYYY'                         | string   | Sim         |
+		|         -         | reuse                                          | boolean  | Não         |
+		| debugger          | Depurador de código                            | boolean  | Não         |
 
 		```html
 		<script>
