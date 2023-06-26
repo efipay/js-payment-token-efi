@@ -1,10 +1,34 @@
 {
 	"name": "payment-token-efi",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"description": "Módulo Javascript que permite a criptografia dos dados do cartão do cartão a partir do browser do cliente para gerar o payment_token e identificar a bandeira do cartão.",
-	"keywords": ["API", "Efí", "payment_token", "cartão de crédito", "token de pagamento"],
+	"keywords": [
+		"API",
+		"Efí",
+		"payment_token",
+		"cartão de crédito",
+		"token de pagamento"
+	],
+	"private": false,
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	},
 	"author": "Efí - Consultoria Tecnica | Guilherme Cota",
-	"repository": "efipay/payment-token-efi",
-	"main": "dist/payment-token-efi.min.js",
-	"license": "MIT"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/efipay/js-payment-token-efi.git"
+	},
+	"bugs": {
+		"url": "https://github.com/efipay/js-payment-token-efi/issues"
+	},
+	"homepage": "https://dev.sejaefi.com.br/docs/pagamento-com-cartao#1-obtenção-do-payment_token",
+	"main": "distNode/payment-token-efi.js",
+	"files": [
+		"./distNode/*"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"jsdom": "^22.1.0"
+	}
 }
