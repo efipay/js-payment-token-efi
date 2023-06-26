@@ -51,7 +51,8 @@ Nesse cenário, você tem duas opções para instalar a biblioteca.
 
 
 - **Importação por NPM**
-	A segunda opção é utilizar o gerenciador de pacotes NPM e instalar a biblioteca com o seguinte comando:
+  
+	A segunda opção é utilizar o [gerenciador de pacotes NPM](https://www.npmjs.com/package/payment-token-efi) e instalar a biblioteca com o seguinte comando:
 
 	```cmd
 	npm i payment-token-efi	
