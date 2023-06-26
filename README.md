@@ -4,7 +4,7 @@ Este módulo JavaScript permite a criptografia dos dados do cartão diretamente 
 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas.
 
-Ir para:
+**Ir para:**
 - [**Exemplo**](#exemplo)
 - [**Instalação**](#instalação)
 	- [**Web**](#web)
