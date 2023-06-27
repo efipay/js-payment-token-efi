@@ -25,7 +25,8 @@
 	"homepage": "https://dev.sejaefi.com.br/docs/pagamento-com-cartao#1-obtenção-do-payment_token",
 	"main": "distNode/payment-token-efi.js",
 	"files": [
-		"./distNode/*"
+		"./distNode/*",
+		"./distNode/examples/*"
 	],
 	"license": "MIT",
 	"dependencies": {
