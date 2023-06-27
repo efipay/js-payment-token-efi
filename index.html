@@ -78,7 +78,7 @@
                         .setAccount(inputIdentificadorConta.value)
                         .setEnvironment('production') // 'production' or 'homologation'
                         .setBrand(bandeira)
-                        .setTotal(inputValorTotal.value)
+                        .setTotal(parseInt(inputValorTotal.value))
                         .getInstallments()
                         .then(arrayParcelas => {
                             let opcoes = '<option value="0">Escolha como deseja pagar</option>';
