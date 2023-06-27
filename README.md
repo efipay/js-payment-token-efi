@@ -93,6 +93,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		| setCardNumber     | Número do cartão de crédito          | string   | Sim         |
 		| debugger          | Depurador de código                  | boolean  | Não         |
 
+    * **Exemplo:**
 		```js
 		try {
 			EfiJs.CreditCard
@@ -137,6 +138,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		| setTotal | Valor total                                     | Integer   | Sim         |
 		| debugger | Depurador de código                             | boolean   | Não         |
 
+    * **Exemplo:**
 		```js
 		try {
 			EfiJs.CreditCard
@@ -176,14 +178,15 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		| setAccount        | Identificador de conta                         | string   | Sim         |
 		| setEnvironment    | Ambiente. `"production"` ou `"homologation"`   | string   | Sim         |
 		| setCreditCardData | Dados do cartão de crédito                     | object   | Sim         |
-		|         -         | brand                                          | string   | Sim         |
+		|         -         | brand `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   | Sim         |
 		|         -         | number                                         | string   | Sim         |
 		|         -         | cvv                                            | string   | Sim         |
-		|         -         | expirationMonth 'MM'                           | string   | Sim         |
-		|         -         | expirationYear  'YYYY'                         | string   | Sim         |
+		|         -         | expirationMonth `'MM'`                         | string   | Sim         |
+		|         -         | expirationYear  `'YYYY'`                       | string   | Sim         |
 		|         -         | reuse                                          | boolean  | Não         |
 		| debugger          | Depurador de código                            | boolean  | Não         |
 
+	* **Exemplo:**
 		```js
 		try {
 			EfiJs.CreditCard
@@ -231,7 +234,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 	
 
 - ### **Dados de saída em caso de falha**
-  	Em caso de erro, será retornado o objeto com os parâmetros descritos abaixo.
+  	Em caso de erro, será retornado no try/catch o objeto com os parâmetros descritos abaixo.
 
   	| Parâmetro | Descrição                                         | Tipo     |
   	|-----------|---------------------------------------------------|----------|
