@@ -21,10 +21,6 @@ select {
 	font-family: inherit;
 }
 
-#gerarPaymentToken {
-	margin-top: 32px;
-}
-
 code {
 	font-size: 13px;
 	padding: 15px;

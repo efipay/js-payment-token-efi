@@ -45,15 +45,13 @@
                 if (inputNumeroCartao.value.length >= 15) {
                     try {
                         EfiJs.CreditCard
-                            .debugger(false)
+                            .debugger(true)
                             .setCardNumber(inputNumeroCartao.value)
                             .verifyCardBrand()
                             .then(bandeira => {
                                 inputBandeira.value = bandeira;
-
-                                if (bandeira !== 'undefined') { // Se encontrar uma bandeira válida, e aciona a função para buscar as opções de parcelamento
-                                    buscarParcelamemto(bandeira);
-                                }
+                                
+                                buscarParcelamemto(bandeira); // aciona a função para buscar as opções de parcelamento
                             });
                     } catch (error) {
                         alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
@@ -76,7 +74,7 @@
                     EfiJs.CreditCard
                         .debugger(false)
                         .setAccount(inputIdentificadorConta.value)
-                        .setEnvironment('production') // 'production' or 'homologation'
+                        .setEnvironment('sandbox') // 'production' or 'sandbox'
                         .setBrand(bandeira)
                         .setTotal(parseInt(inputValorTotal.value))
                         .getInstallments()
@@ -115,7 +113,7 @@
                     EfiJs.CreditCard
                         .debugger(false)
                         .setAccount(inputIdentificadorConta.value)
-                        .setEnvironment('production') // 'production' or 'homologation'
+                        .setEnvironment('sandbox') // 'production' or 'sandbox'
                         .setCreditCardData({
                             brand: inputBandeira.value,
                             number: inputNumeroCartao.value,
@@ -199,7 +197,7 @@
             </ul>
 
             <div class="py-2 text-center">
-                <h2>Página de exemplo - Gerar payment_token</h2>
+                <h2>Página de demonstração - Gerar payment_token</h2>
                 <p class="lead">Um payment_token é um conjunto de caracteres gerado de forma segura pela API Efí que
                     representa os
                     dados do cartão de crédito do pagador.</p>
@@ -337,15 +335,9 @@
                         </label>
                         <input type="text" class="form-control" name="cvv" id="cvv">
                     </div>
-                </div>
-                <!-- Fim - Inputs com informações do cartão de crédito  -->
 
-                <hr>
-
-                <!-- Início - Informação de parcelamento e botão para acionar a geração do payment_token   -->
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="opcoesParcelamento" class="form-label">Opções de pagamento
+                    <div class="col-md-12">
+                        <label for="opcoesParcelamento" class="form-label">Opções de parcelamento
                             <code data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="Obtida quando definida a bandeira">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -358,31 +350,44 @@
                             <option value="0">Digite o número do cartão</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <!-- Fim - Inputs com informações do cartão de crédito  -->
+
+                <hr>
+
+                <!-- Início - Informação de parcelamento e botão para acionar a geração do payment_token   -->
+                <div class="row g-3">
+                    <div class="col-md-12">
                         <button class="w-100 btn btn-primary btn-lg disabled" id="gerarPaymentToken" type="button">Gerar
-                            payment_token</button>
+                            Payment Token</button>
                     </div>
                 </div>
                 <!-- Fim - Informação de parcelamento e botão para acionar a geração do payment_token -->
 
                 <hr>
 
+                <h4 class="mb-3">Resultado <code data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Obtidas após execução das funções acionadas pelo botão">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                </code>
+                </h4>
                 <div class="row g-3">
-                    <h4 class="mb-3">Resultado <code data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Obtidas após execução das funções acionadas pelo botão">
+                    <div class="col-md-6"> <!-- Input que receberá o payment_token gerado -->
+                        <label for="paymentToken" class="form-label">Payment Token <code data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="payment_token gerado para ambiente de homologação">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                            </svg>
-                        </code>
-                    </h4>
-                    <div class="col-md-6"> <!-- Input que receberá o payment_token gerado -->
-                        <label for="paymentToken" class="form-label">Payment Token a ser gerado</label>
-                        <input type="text" class="form-control" name="paymentToken" id="paymentToken" readonly>
+                            </svg></label>
+                    </code>
+                            <input type="text" class="form-control" name="paymentToken" id="paymentToken" readonly>
                     </div>
 
                     <div class="col-md-6"> <!-- Input que receberá o card_mask gerado -->
-                        <label for="mascaraCartao" class="form-label">Máscara do cartão de crédito</label>
+                        <label for="mascaraCartao" class="form-label">Máscara do cartão</label>
                         <input type="text" class="form-control" name="mascaraCartao" id="mascaraCartao" readonly>
                     </div>
                 </div>
