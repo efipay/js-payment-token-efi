@@ -5,7 +5,7 @@ Este módulo JavaScript permite a criptografia dos dados do cartão diretamente 
 Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas.
 
 **Ir para:**
-- [**Exemplo**](#exemplo)
+- [**Demonstração**](#demonstração)
 - [**Instalação**](#instalação)
 	- [**Web**](#web)
 	- [**Node**](#node)
@@ -17,7 +17,7 @@ Com essa biblioteca é possível implementar uma solução segura e eficiente pa
 
 ___
 
-## **Exemplo**
+## **Demonstração**
 Para ilustrar a utilização deste módulo em um contexto prático, você pode conferir um exemplo no seguinte link: <a href='https://efipay.github.io/js-payment-token-efi/' target ='_blank'>Clique aqui</a>.
 
 ___
@@ -43,10 +43,17 @@ Nesse cenário, você tem duas opções para instalar a biblioteca.
 
 - **Importação local**
   
-	Fazer o <a href='https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/distNode/payment-token-efi.js' target ='_blank'>download do arquivo</a> `/distNode/payment-token-efi.js` e adicioná-lo localmente.
+	Fazer o <a href='https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/distNode/payment-token-efi.js' target ='_blank'>download do arquivo</a> `/distNode/payment-token-efi.js` e adicioná-lo localmente em seu projeto.
 
 	```js
 	const EfiJs = require('./distNode/payment-token-efi');
+	```
+
+	Depois instalar a seguinte biblioteca como dependência para a virtualização do DOM.
+	```cmd
+	npm install jsdom --save
+	// ou
+	yarn add jsdom
 	```
 
 
@@ -65,16 +72,6 @@ Nesse cenário, você tem duas opções para instalar a biblioteca.
 	```js
 	const EfiJs = require('payment-token-efi');
 	```
-
-**Observação**
-
-É importante ressaltar que também é necessário instalar a seguinte biblioteca para a virtualização do DOM.
-```cmd
-npm install jsdom --save
-// ou
-yarn add jsdom
-```
-
 ___
 
 ## **Utilização**
@@ -133,7 +130,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		| Parâmetro/Método  | Descrição                               | Tipo     | Obrigatório |
 		|---------------|---------------------------------------------|----------|-------------|
 		| setAccount | Identificador de conta                         | string   | Sim         |
-		| setEnvironment | Ambiente. `"production"` ou `"homologation"`   | string   | Sim     |
+		| setEnvironment | Ambiente. `"production"` ou `"sandbox"`   | string   | Sim     |
 		| setBrand | Bandeira do cartão `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   | Sim  |
 		| setTotal | Valor total                                     | Integer   | Sim         |
 		| debugger | Depurador de código                             | boolean   | Não         |
@@ -143,7 +140,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		try {
 			EfiJs.CreditCard
 				.setAccount('Identificador_de_conta_aqui')
-				.setEnvironment('production') // 'production' or 'homologation'
+				.setEnvironment('production') // 'production' or 'sandbox'
 				.setBrand('visa')
 				.setTotal(28990)
 				.getInstallments()
@@ -176,7 +173,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		| Parâmetro/Método  | Descrição                                      | Tipo     | Obrigatório |
 		|-------------------|------------------------------------------------|----------|-------------|
 		| setAccount        | Identificador de conta                         | string   | Sim         |
-		| setEnvironment    | Ambiente. `"production"` ou `"homologation"`   | string   | Sim         |
+		| setEnvironment    | Ambiente. `"production"` ou `"sandbox"`   | string   | Sim         |
 		| setCreditCardData | Dados do cartão de crédito                     | object   | Sim         |
 		|         -         | brand `"visa"`, `"mastercard"`, `"amex"`, `"elo"`, `"hipercard"`  | string   | Sim         |
 		|         -         | number                                         | string   | Sim         |
@@ -191,7 +188,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 		try {
 			EfiJs.CreditCard
 				.setAccount('Identificador_de_conta_aqui')
-				.setEnvironment('production') // 'production' or 'homologation'
+				.setEnvironment('production') // 'production' or 'sandbox'
 				.setCreditCardData({
 					brand: 'visa',
 					number: '4485785674290087',
