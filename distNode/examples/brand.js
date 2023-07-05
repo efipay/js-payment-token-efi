@@ -6,7 +6,7 @@ try {
 		.verifyCardBrand()
 		.then(brand => {
 			console.log('Bandeira: ', brand);
-			if (brand !== 'undefined') {
+			if (!['undefined', 'unsupported'].includes(brand)) {
 				// Exemplo: executar a função para gerar o payment_token com a bandeira identificada
 			}
 		}).catch(err => {

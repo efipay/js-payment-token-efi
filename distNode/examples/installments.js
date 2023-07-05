@@ -3,7 +3,7 @@ const EfiJs = require('payment-token-efi');
 try {
 	EfiJs.CreditCard
 		.setAccount('Identificador_de_conta_aqui')
-		.setEnvironment('production') // 'production' or 'homologation'
+		.setEnvironment('sandbox') // 'production' or 'sandbox'
 		.setBrand('visa')
 		.setTotal(28990)
 		.getInstallments()

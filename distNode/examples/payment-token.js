@@ -3,7 +3,7 @@ const EfiJs = require('payment-token-efi');
 try {
 	EfiJs.CreditCard
 		.setAccount('Identificador_de_conta_aqui')
-		.setEnvironment('production') // 'production' or 'homologation'
+		.setEnvironment('sandbox') // 'production' or 'sandbox'
 		.setCreditCardData({
 			brand: 'visa',
 			number: '4485785674290087',
@@ -16,6 +16,7 @@ try {
 		.then(data => {
 			const payment_token = data.payment_token;
 			const card_mask = data.card_mask;
+			
 			console.log('payment_token', payment_token);
 			console.log('card_mask', card_mask);
 		}).catch(err => {
