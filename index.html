@@ -12,13 +12,10 @@
     <link href="./assets/css/custom.css" rel="stylesheet">
 
     <!-- Script  -->
-    <script src="./dist/payment-token-efi.min.js"></script>
+    <script src="./dist/payment-token-efi-umd.min.js"></script>
 
     <script>
-
-
         document.addEventListener('DOMContentLoaded', () => { // Aguarda o carregamento da página para iniciar os scripts
-
             // Configuração
             var inputIdentificadorConta = document.getElementById("identificadorConta");
             var inputValorTotal = document.getElementById("valorTotal");
@@ -35,8 +32,13 @@
             // Botão de acionamento
             var btnGerarToken = document.getElementById("gerarPaymentToken");
 
+            const efi = EfiPay.CreditCard;
 
-            inputNumeroCartao.addEventListener("input", function () {
+            efi
+                .debugger(false)
+                .setEnvironment('sandbox') // 'production' or 'sandbox';
+
+            inputNumeroCartao.addEventListener("input", async function () {
 
                 /*
                 * Identifica a bandeira a partir do número do cartão
@@ -44,15 +46,12 @@
                 */
                 if (inputNumeroCartao.value.length >= 15) {
                     try {
-                        EfiJs.CreditCard
-                            .debugger(true)
+                        resultBandeira = await efi
                             .setCardNumber(inputNumeroCartao.value)
-                            .verifyCardBrand()
-                            .then(bandeira => {
-                                inputBandeira.value = bandeira;
-                                
-                                buscarParcelamemto(bandeira); // aciona a função para buscar as opções de parcelamento
-                            });
+                            .verifyCardBrand();
+
+                        inputBandeira.value = resultBandeira;
+                        buscarParcelamemto(resultBandeira); // aciona a função para buscar as opções de parcelamento
                     } catch (error) {
                         alert(`Erro ao obter a bandeira!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                         console.warn(`Algo deu errado ao verificar a bandeira.\n ${error}`);
@@ -63,44 +62,37 @@
                 */
             });
 
-
-            function buscarParcelamemto(bandeira) {
+            async function buscarParcelamemto(bandeira) {
 
                 /*
                 * Retorna as informações de parcelamento
                 * @params { identificadorConta, ambiente, bandeira, valorTotal }
                 */
                 try {
-                    EfiJs.CreditCard
-                        .debugger(false)
+                    const resultParcelas = await efi
                         .setAccount(inputIdentificadorConta.value)
-                        .setEnvironment('sandbox') // 'production' or 'sandbox'
                         .setBrand(bandeira)
                         .setTotal(parseInt(inputValorTotal.value))
-                        .getInstallments()
-                        .then(arrayParcelas => {
-                            let opcoes = '<option value="0">Escolha como deseja pagar</option>';
+                        .getInstallments();
 
-                            for (let index = 0; index < arrayParcelas.installments.length; index++) {
-                                opcoes += `<option value="${arrayParcelas.installments[index].installment}">${arrayParcelas.installments[index].installment} x de R$${arrayParcelas.installments[index].currency} ${arrayParcelas.installments[index].has_interest === false ? "sem juros" : ""}</option>`;
-                            }
-                            inputParcelas.innerHTML = opcoes;
-                        }).catch(err => {
-                            alert(`Erro ao buscar as parcelas!\n\nCódigo: ${err.code}\nNome: ${err.error}\nMensagem: ${err.error_description}`);
-                            throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
-                        });
+                    const opcoes = resultParcelas.installments.map(installment => `
+                    <option value="${installment.installment}">
+                        ${installment.installment} x de R$${installment.currency} ${installment.has_interest === false ? "sem juros" : ""}
+                    </option>`
+                    ).join('');
+
+                    inputParcelas.innerHTML = `<option value="0">Escolha como deseja pagar</option>${opcoes}`;
+
                 } catch (error) {
                     alert(`Erro ao buscar as parcelas!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                     throw new Error(`Something went wrong.\n ${error}`);
                 }
-
                 /*
                  * FIM - Retorna as informações de parcelamento
                  */
             }
 
-
-            btnGerarToken.addEventListener("click", function () {
+            btnGerarToken.addEventListener("click", async function () {
                 btnGerarToken.classList.add('disabled');
 
                 btnGerarToken.innerHTML = '<div class="spinner-border spinner-border-sm text-info" role="status"> <span class="visually-hidden">Loading...</span></div>';
@@ -110,8 +102,7 @@
                 * @params { identificadorConta, ambiente, {bandeira, numeroCartao, cvv, mesVencimento, anoVencimento, reuse} }
                 */
                 try {
-                    EfiJs.CreditCard
-                        .debugger(false)
+                    const resultPaymentToken = await efi
                         .setAccount(inputIdentificadorConta.value)
                         .setEnvironment('sandbox') // 'production' or 'sandbox'
                         .setCreditCardData({
@@ -122,24 +113,18 @@
                             expirationYear: inputAnoVencimento.value,
                             reuse: false
                         })
-                        .getPaymentToken()
-                        .then(dados => {
-                            let payment_token = dados.payment_token;
-                            let card_mask = dados.card_mask;
+                        .getPaymentToken();
 
-                            inputPaymentToken.value = payment_token;
-                            mascaraCartao.value = card_mask;
+                    let payment_token = resultPaymentToken.payment_token;
+                    let card_mask = resultPaymentToken.card_mask;
 
-                            btnGerarToken.classList.remove('btn-primary');
-                            btnGerarToken.classList.add('btn-success');
-                            btnGerarToken.innerHTML = 'Gerar novamente';
-                            btnGerarToken.classList.remove('disabled');
-                        }).catch(err => {
-                            alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${err.code}\nNome: ${err.error}\nMensagem: ${err.error_description}`);
-                            btnGerarToken.innerHTML = 'Gerar payment_token';
-                            btnGerarToken.classList.remove('disabled');
-                            throw new Error(`Something went wrong in verifyCardBrand(.\n ${error}`);
-                        });
+                    inputPaymentToken.value = payment_token;
+                    mascaraCartao.value = card_mask;
+
+                    btnGerarToken.classList.remove('btn-primary');
+                    btnGerarToken.classList.add('btn-success');
+                    btnGerarToken.innerHTML = 'Gerar novamente';
+                    btnGerarToken.classList.remove('disabled');
                 } catch (error) {
                     alert(`Erro ao buscar ao gerar o payment_token!\n\nCódigo: ${error.code}\nNome: ${error.error}\nMensagem: ${error.error_description}`);
                     btnGerarToken.innerHTML = 'Gerar payment_token';
@@ -167,8 +152,6 @@
                 btnGerarToken.classList.remove('disabled');
             });
         });
-
-
     </script>
 
 </head>
