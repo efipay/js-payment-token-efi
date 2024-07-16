@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Token Efí</title>
+    <script src="../dist/payment-token-efi-umd.min.js"></script>
+    <script>
+        async function generatePaymentToken() {
+            try {
+                const result = await EfiPay.CreditCard
+                    .setAccount('Identificador_de_conta_aqui')
+                    .setEnvironment('sandbox') // 'production' or 'sandbox'
+                    .setCreditCardData({
+                        brand: 'visa',
+                        number: '4485785674290087',
+                        cvv: '123',
+                        expirationMonth: '05',
+                        expirationYear: '2031',
+                        reuse: false
+                    })
+                    .getPaymentToken();
+
+
+                let payment_token = result.payment_token;
+                let card_mask = result.card_mask;
+
+                console.log(`Payment token:${payment_token}`);
+                console.log(`Máscara cartão:${card_mask}`);
+                let tokenElement = document.getElementById("token");
+
+                tokenElement.value = payment_token;
+
+            } catch (error) {
+                console.log(`Código: ${error.code}\nerror: ${error.error}\nerror_description: ${error.error_description}`);
+                throw new Error(`Something went wrong.\n ${error}`);
+            };
+        }
+
+        generatePaymentToken();
+    </script>
+    <style>
+        #token {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Exemple geração Payment Token</h1>
+    <input type="text" id="token" name="token">
+</body>
+
+</html>
