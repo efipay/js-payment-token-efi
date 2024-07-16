@@ -1,6 +1,6 @@
 {
 	"name": "payment-token-efi",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "Módulo Javascript que permite a criptografia dos dados do cartão do cartão a partir do browser do cliente para gerar o payment_token e identificar a bandeira do cartão.",
 	"keywords": [
 		"API",
@@ -14,7 +14,7 @@
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
 	},
-	"author": "Efí - Consultoria Tecnica | Guilherme Cota",
+	"author": "Consultoria Tecnica Efí | Guilherme Cota",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/efipay/js-payment-token-efi.git"
@@ -22,14 +22,10 @@
 	"bugs": {
 		"url": "https://github.com/efipay/js-payment-token-efi/issues"
 	},
-	"homepage": "https://dev.sejaefi.com.br/docs/pagamento-com-cartao#1-obtenção-do-payment_token",
-	"main": "distNode/payment-token-efi.js",
-	"files": [
-		"./distNode/*",
-		"./distNode/examples/*"
-	],
-	"license": "MIT",
-	"dependencies": {
-		"jsdom": "^22.1.0"
-	}
+	"homepage": "https://dev.efipay.com.br/docs/api-cobrancas/cartao/#obten%C3%A7%C3%A3o-do-payment_token",
+	"main": "dist/payment-token-efi-cjs.min.js",
+	"module": "dist/payment-token-efi-esm.min.js",
+	"browser": "dist/payment-token-efi-umd.min.js",
+	"types": "types/payment-token-efi.d.ts",
+	"license": "MIT"
 }
