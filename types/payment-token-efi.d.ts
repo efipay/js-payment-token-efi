@@ -46,4 +46,6 @@ declare module "payment-token-efi" {
       }
     }
   }
+
+  export default EfiPay;
 }
