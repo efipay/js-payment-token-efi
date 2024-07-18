@@ -1,5 +1,5 @@
 declare module "payment-token-efi" {
-  export namespace EfiJs {
+  export namespace EfiPay {
     namespace CreditCard {
       function setEnvironment(environment: "production" | "sandbox"): typeof CreditCard;
       function setCardNumber(cardNumber: string): typeof CreditCard;

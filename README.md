@@ -85,13 +85,7 @@ _**Obs**: Esta biblioteca não é compatível no backend em Node.js_
 
 ### **Tipagens TypeScript**
 
-Se você estiver utilizando TypeScript, você pode instalar as tipagens para a biblioteca:
-
-```sh
-npm install @types/payment-token-efi
-// ou
-yarn add @types/payment-token-efi
-```
+Se você estiver utilizando TypeScript, quando você instalar a biblioteca **payment-token-efi**, o TypeScript deve ser capaz de encontrar os tipos automaticamente localizados em `types/payment-token-efi.d.ts`
 
 ---
 
