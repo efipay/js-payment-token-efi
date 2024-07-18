@@ -7,12 +7,17 @@ Esta biblioteca JavaScript permite uma solução segura e eficiente para manipul
 - [**Demonstração**](#demonstração)
 - [**Instalação**](#instalação)
   - [**Web**](#web-browser)
-  - [**Gerenciador de pacote**](#gerenciador-de-pacote-npm-ou-yarn))
+  - [**Gerenciador de pacote**](#gerenciador-de-pacote-npm-ou-yarn)
   	- [**UMD**](#universal-module-definition-umd)
   	- [**ES Modules**](#ecmascript-modules-esm)
   	- [**CommonJS**](#commonjs-cjs)
   - [**Tipagens TypeScript**](#tipagens-typescript)
 - [**Utilização**](#utilização)
+	- [**Identificar a bandeira**](#identificar-a-bandeira)
+	- [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
+	- [**Gerar o payment_token e card_mask**](#gerar-o-payment_token-e-card_mask)
+	- [**Dados de saída em caso de falha**](#dados-de-saída-em-caso-de-falha)
+	- [**Exemplos práticos**](#exemplos-práticos)
 - [**Criação da cobrança**](#criação-da-cobrança)
 - [**Documentação Adicional**](#documentação-adicional)
 - [**Comunidade e suporte**](#comunidade-e-suporte)
@@ -97,7 +102,7 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 
 <br>
 
-- ### **Identificar a bandeira**
+### **Identificar a bandeira**
 
   - **Dados de entrada:**
 
@@ -132,7 +137,7 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 
 <br>
 
-- ### **Buscar as informações de parcelamento**
+### **Buscar as informações de parcelamento**
 
   - **Dados de entrada:**
 
@@ -172,7 +177,7 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 
 <br>
 
-- ### **Gerar o payment_token e card_mask**
+### **Gerar o payment_token e card_mask**
 
   - **Dados de entrada:**
 
@@ -227,7 +232,7 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 	| payment_token | Token de pagamento que representa o cartão utilizado | string |
 	| card_mask     | Máscara do cartão utilizado                          | string |
 
-* ### **Ativar debbuger**
+### **Ativar debbuger**
 
   O debugger pode ser ativado para depurar e encontrar possível falhas.
 
@@ -235,7 +240,7 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
   EfiPay.CreditCard.debugger(true);
   ```
 
-* ### **Dados de saída em caso de falha**
+### **Dados de saída em caso de falha**
 
   Em caso de erro, será retornado no try/catch o objeto com os parâmetros descritos abaixo.
 
@@ -244,6 +249,10 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
   | code              | Código de erro para identificação.   | string |
   | error             | Nome do erro.                        | string |
   | error_description | Mensagem detalhando o erro ocorrido. | string |
+
+
+### Exemplos práticos
+Disponibilizamos alguns exemplos de utilização para as principais linguaguagens de progração front-end. [Acesse aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
 
 <br>
 
