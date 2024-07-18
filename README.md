@@ -1,8 +1,6 @@
 <h1>Script payment_token cartão de crédito | Efí</h1>
 
-Esta biblioteca JavaScript permite a criptografia dos dados do cartão diretamente no navegador do cliente, gerando o payment_token, identificando a bandeira do cartão e obtendo informações de parcelamento.
-
-Com essa biblioteca é possível implementar uma solução segura e eficiente para manipulação de dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no navegador do cliente aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas.
+Esta biblioteca JavaScript permite uma solução segura e eficiente para manipular dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no front-end da aplicação aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas. Também é possível identificar a bandeira do cartão e obter informações de parcelamento.
 
 **Ir para:**
 
@@ -24,7 +22,7 @@ Com essa biblioteca é possível implementar uma solução segura e eficiente pa
 
 ## **Demonstração**
 
-Para ilustrar a utilização desta biblioteca em um contexto prático, você pode conferir uma demonstração no seguinte link: <a href='https://efipay.github.io/js-payment-token-efi/' target ='_blank'>Clique aqui</a>.
+Para ilustrar a utilização desta biblioteca em um contexto prático, você pode conferir uma demonstração [neste link](https://efipay.github.io/js-payment-token-efi/).
 
 ![Demonstração geerando um payment_token](https://sejaefi.link/rygrqiv3DR)
 
@@ -36,14 +34,17 @@ Abaixo, fornecemos algumas opções de instalação da biblioteca para atender a
 
 ### **Web (Browser)**
 
-Realize o <a href='https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/dist/payment-token-efi-umd.min.js' target ='_blank'>download da biblioteca</a> localizada em `/dist/payment-token-efi-umd.min.js`, ou utilize a importação através do link do CDN.
-
-Para uso diretamente em navegadores, a biblioteca será disponibilizada globalmente como `EfiPay`:
+Realize o [download da biblioteca](https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/dist/payment-token-efi-umd.min.js) localizada em `/dist/payment-token-efi-umd.min.js` para importação local, ou utilize a importação através do link do CDN.
 
 - **Importação local**
   ```html
   <script src="./dist/payment-token-efi-umd.min.js"></script>
   ```
+- **Importação por CDN**
+  ```html
+  <script src="https://cdn.jsdelivr.net/gh/efipay/js-payment-token-efi/dist/payment-token-efi-umd.min.js"></script>
+  ```
+  _**Obs**: neste tipo de aplicação, utilize o módulo **umd**._
 
 ### **Gerenciador de pacote (NPM ou Yarn)**
 
@@ -98,7 +99,7 @@ yarn add @types/payment-token-efi
 
 Este script oferece três funções para manipulação de dados de cartão de crédito. A primeira função permite <ins>**identificar a bandeira**</ins> do cartão a partir do seu número. A segunda função <ins>**busca informações de parcelamento**</ins> de acordo com as configurações de recebimento em sua conta. Por fim, a terceira função <ins>**gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)**</ins> com base nos dados do cartão.
 
-Para utilizar esse script, é necessário passar o código Identificador de Conta (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde encontrá-la</a>. Certifique-se de ter essa informação disponível ao utilizar as funções do script.
+Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde encontrar</a>. 
 
 <br>
 
@@ -116,8 +117,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
     ```js
     async function identificarBandeira() {
       try {
-        const efi = EfiPay.CreditCard;
-        const bandeira = await efi
+        const bandeira = await EfiPay.CreditCard
           .setCardNumber("4485785674290087")
           .verifyCardBrand();
 
@@ -155,8 +155,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
     ```js
     async function listarParcelas() {
       try {
-        const efi = EfiPay.CreditCard;
-        const parcelas = await efi
+        const parcelas = await EfiPay.CreditCard
           .setAccount("Identificador_de_conta_aqui")
           .setEnvironment("production") // 'production' or 'sandbox'
           .setBrand("visa")
@@ -201,8 +200,7 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
     ```js
     async function gerarPaymentToken() {
       try {
-        const efi = EfiPay.CreditCard;
-        const paymentTokenData = await efi
+        const paymentTokenData = await EfiPay.CreditCard
           .setAccount("Identificador_de_conta_aqui")
           .setEnvironment("production") // 'production' or 'sandbox'
           .setCreditCardData({
@@ -261,13 +259,15 @@ Para utilizar esse script, é necessário passar o código Identificador de Cont
 
 Após a obtenção do payment_token será possível emitir a cobrança de cartão de crétito. [Acesse nossa documentação técnica](https://dev.efipay.com.br/docs/api-cobrancas/cartao#cria%C3%A7%C3%A3o-de-cobran%C3%A7a-por-cart%C3%A3o-de-cr%C3%A9dito-em-one-step-um-passo) para mais detalhes.
 
+Para criar cobranças de cartão de crédito, lembre-se de registrar o ramo de atividades em sua conta Efí. [Veja como](https://sejaefi.com.br/central-de-ajuda/dados-cadastrais/inserir-ramo-de-atividade#conteudo).
+
 ---
 
 ## **Documentação Adicional**
 
-<a href='https://dev.efipay.com.br/' target='_blank'>Acesse nossa documentação técnica</a> para ver todas as informações das APIs Efí Pay.
+[Acesse nossa documentação técnica](https://dev.efipay.com.br/)</a> para ver todas as informações das APIs Efí Pay.
 
-Se você ainda não tem uma conta digital da Efí, <a href='https://sejaefi.com.br/' target='_blank'>abra a sua agora</a>!
+Se você ainda não tem uma conta digital da Efí, [abra a sua agora](https://sejaefi.com.br/)!
 
 ---
 
@@ -275,7 +275,7 @@ Se você ainda não tem uma conta digital da Efí, <a href='https://sejaefi.com.
 
 <a href="https://comunidade.sejaefi.com.br/"><img src="https://efipay.github.io/comunidade-discord-efi/assets/img/thumb-repository.png"></a>
 
-Conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e muito mais) com a ajuda da maior comunidade de integradores do Brasil. <a href='https://comunidade.sejaefi.com.br/' target='_blank'>Faça parte da comunidade Efí.
+[Faça parte da comunidade Efí](https://comunidade.sejaefi.com.br/) e conecte-se a milhares de desenvolvedores, participe de discussões, tire dúvidas e integre suas operações às APIs Efí (API Pix, API Boletos e Cartão, e muito mais) com a ajuda da maior comunidade de integradores de meios de pagamentos do Brasil.
 
 ---
 
