@@ -27,7 +27,7 @@ export class AppComponent {
     try {
       const result = await EfiPay.CreditCard.debugger(true, true)
         .setAccount("Identificador_de_conta_aqui")
-        .setEnvironment("sandbox")  // 'production' or 'sandbox'
+        .setEnvironment("sandbox") // 'production' or 'sandbox'
         .setCreditCardData({
           brand: "visa",
           number: "4485785674290087",
@@ -38,10 +38,12 @@ export class AppComponent {
         })
         .getPaymentToken();
 
-      this.paymentToken = result.payment_token;
-      this.cardMask = result.card_mask;
-      console.log("payment_token", result.payment_token);
-      console.log("card_mask", result.card_mask);
+      if ("payment_token" in result && "card_mask" in result) {
+        this.paymentToken = result.payment_token;
+        this.cardMask = result.card_mask;
+        console.log("payment_token", result.payment_token);
+        console.log("card_mask", result.card_mask);
+      }
     } catch (err: any) {
       console.log(err);
       console.log("Código: ", err.code);
