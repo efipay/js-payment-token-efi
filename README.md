@@ -114,13 +114,13 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
   - **Exemplo:**
 
     ```js
-    async function identificarBandeira() {
+    async function identifyBrand() {
       try {
-        const bandeira = await EfiPay.CreditCard
+        const brand = await EfiPay.CreditCard
           .setCardNumber("4485785674290087")
           .verifyCardBrand();
 
-        console.log("Bandeira: ", resultBandeira);
+        console.log("Bandeira: ", brand);
       } catch (error) {
         console.log("Código: ", error.code);
         console.log("Nome: ", error.error);
@@ -152,15 +152,16 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
   - **Exemplo:**
 
     ```js
-    async function listarParcelas() {
+    async function listInstallments() {
       try {
-        const parcelas = await EfiPay.CreditCard
+        const installments = await EfiPay.CreditCard
           .setAccount("Identificador_de_conta_aqui")
           .setEnvironment("production") // 'production' or 'sandbox'
           .setBrand("visa")
           .setTotal(28990)
-          .getInstallments()
-          .console.log("Parcelas", installments);
+          .getInstallments();
+
+          console.log("Parcelas", installments);
       } catch (error) {
         console.log("Código: ", error.code);
         console.log("Nome: ", error.error);
@@ -197,9 +198,9 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
   - **Exemplo:**
 
     ```js
-    async function gerarPaymentToken() {
+    async function generatePaymentToken() {
       try {
-        const paymentTokenData = await EfiPay.CreditCard
+        const result = await EfiPay.CreditCard
           .setAccount("Identificador_de_conta_aqui")
           .setEnvironment("production") // 'production' or 'sandbox'
           .setCreditCardData({
@@ -212,8 +213,8 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
           })
           .getPaymentToken();
 
-        const payment_token = paymentTokenData.payment_token;
-        const card_mask = paymentTokenData.card_mask;
+        const payment_token = result.payment_token;
+        const card_mask = result.card_mask;
 
         console.log("payment_token", payment_token);
         console.log("card_mask", card_mask);
