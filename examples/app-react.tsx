@@ -11,7 +11,7 @@ const App: React.FC = () => {
     setLoading(true);
 
     try {
-      const result = await EfiPay.CreditCard.debugger(true, true)
+      const result = await EfiPay.CreditCard
         .setAccount("Identificador_de_conta_aqui")
         .setEnvironment("sandbox") // 'production' or 'sandbox'
         .setCreditCardData({
