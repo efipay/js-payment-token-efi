@@ -47,7 +47,7 @@ Realize o [download da biblioteca](https://raw.githubusercontent.com/efipay/js-p
   ```
 - **Importação por CDN**
   ```html
-  <script src="https://cdn.jsdelivr.net/gh/efipay/js-payment-token-efi/dist/payment-token-efi-umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/payment-token-efi/dist/payment-token-efi-umd.min.js"></script>
   ```
   _**Obs**: neste tipo de aplicação, utilize o módulo **umd**._
 
