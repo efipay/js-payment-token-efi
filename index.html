@@ -19,23 +19,28 @@
             // Configuração
             var inputIdentificadorConta = document.getElementById("identificadorConta");
             var inputValorTotal = document.getElementById("valorTotal");
+
             // Dados cartão
             var inputNumeroCartao = document.getElementById("numeroCartao");
             var inputBandeira = document.getElementById("bandeira");
             var inputMesVencimento = document.getElementById("mesVencimento");
             var inputAnoVencimento = document.getElementById("anoVencimento");
             var inputCvv = document.getElementById("cvv");
+            var inputNomeTitular = document.getElementById("nomeTitular");
+            var inputDocumentoTitular = document.getElementById("documentoTitular");
+
             // Resultados
             var inputParcelas = document.getElementById("opcoesParcelamento");
             var inputPaymentToken = document.getElementById("paymentToken");
             var inputmascaraCartao = document.getElementById("mascaraCartao");
+
             // Botão de acionamento
             var btnGerarToken = document.getElementById("gerarPaymentToken");
 
             const efi = EfiPay.CreditCard;
 
             efi
-                .debugger(false)
+                .debugger(true)
                 .setEnvironment('sandbox') // 'production' or 'sandbox';
 
             inputNumeroCartao.addEventListener("input", async function () {
@@ -104,13 +109,14 @@
                 try {
                     const resultPaymentToken = await efi
                         .setAccount(inputIdentificadorConta.value)
-                        .setEnvironment('sandbox') // 'production' or 'sandbox'
                         .setCreditCardData({
                             brand: inputBandeira.value,
                             number: inputNumeroCartao.value,
                             cvv: inputCvv.value,
                             expirationMonth: inputMesVencimento.value,
                             expirationYear: inputAnoVencimento.value,
+                            holderName: inputNomeTitular.value,
+                            holderDocument: inputDocumentoTitular.value,
                             reuse: false
                         })
                         .getPaymentToken();
@@ -151,6 +157,20 @@
             inputParcelas.addEventListener("change", function () {
                 btnGerarToken.classList.remove('disabled');
             });
+
+            const populateYears = (selectId, range) => {
+                const currentYear = new Date().getFullYear();
+                const selectElement = document.getElementById('anoVencimento');
+
+                for (let i = 0; i <= range; i++) {
+                    const year = currentYear + i;
+                    const option = document.createElement("option");
+                    option.value = year;
+                    option.textContent = year;
+                    selectElement.appendChild(option);
+                }
+            }
+            populateYears('anoVencimento', 10);
         });
     </script>
 
@@ -195,18 +215,26 @@
                 <h4 class="mb-3">Configuração</h4>
                 <div class="row">
                     <div class="col-md-8">
-                        <label for="identificadorConta" class="form-label">Identificador de conta
+                        <label for="identificadorConta" class="form-label">Identificador de conta *
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="(String - '00000000000000000000000000000000')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
                             <code>
-                                <a target="_blank" href="https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                <a target="_blank" href="./assets/img/local-identificador-de-conta.png"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
                                 <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
                                 <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
                               </svg>onde encontro?</a>
                             </code>
                         </label>
-                        <input type="text" class="form-control" name="identificadorConta" id="identificadorConta">
+                        <input type="text" class="form-control" name="identificadorConta" id="identificadorConta"
+                            required>
                     </div>
                     <div class="col-md-4">
-                        <label for="valorTotal" class="form-label">Valor total
+                        <label for="valorTotal" class="form-label">Valor total *
                             <code data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="(Integer) Ex: '24990' equivale a R$249,90">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -215,7 +243,8 @@
                               </svg>
                             </code>
                         </label>
-                        <input type="number" class="form-control" name="valorTotal" id="valorTotal" value="24990">
+                        <input type="number" class="form-control" name="valorTotal" id="valorTotal" value="24990"
+                            required>
                     </div>
                 </div>
                 <!-- Fim - Configuração para funcionamento do script - Identificador de conta  -->
@@ -225,7 +254,7 @@
                 <!-- Início - Inputs com informações do cartão de crédito  -->
                 <h4 class="mb-3">Informação do cartão
                     <code>
-                        <a target="_blank" href="https://www.4devs.com.br/gerador_de_numero_cartao_credito"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <a target="_blank" href="https://www.invertexto.com/gerador-de-cartao-de-credito"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
                         <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
                         <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
                       </svg>cartão fictício</a>
@@ -233,7 +262,7 @@
                 </h4>
                 <div class="row gy-3">
                     <div class="col-md-7">
-                        <label for="numeroCartao" class="form-label">Número do cartão
+                        <label for="numeroCartao" class="form-label">Número do cartão *
                             <code data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="(String - 'XXXXXXXXXXXXXXXX')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -241,12 +270,12 @@
                             </svg>
                             </code>
                         </label>
-                        <input type="text" class="form-control" name="numeroCartao" id="numeroCartao">
+                        <input type="text" class="form-control" name="numeroCartao" id="numeroCartao" required>
                     </div>
 
                     <div class="col-md-5">
                         <!-- Bandeira será preenchida dinamicamente de acordo com o número do cartão informado -->
-                        <label for="bandeira" class="form-label">Bandeira
+                        <label for="bandeira" class="form-label">Bandeira *
                             <code data-bs-toggle="tooltip" data-bs-placement="top"
                                 title="(String - 'visa', 'mastercard', 'amex', 'elo', 'hipercard') Obtida a partir do número do cartão"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -254,18 +283,18 @@
                               </svg>
                             </code>
                         </label>
-                        <input type="text" class="form-control" name="bandeira" id="bandeira" readonly>
+                        <input type="text" class="form-control" name="bandeira" id="bandeira" readonly required>
                     </div>
 
                     <div class="col-md-4">
-                        <label for="mesVencimento" class="form-label">Mês de vencimento
+                        <label for="mesVencimento" class="form-label">Mês de vencimento *
                             <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - 'MM')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                           </svg>
                         </code>
                         </label>
-                        <select class="form-select" name="mesVencimento" id="mesVencimento">
+                        <select class="form-select" name="mesVencimento" id="mesVencimento" required>
                             <option selected>01</option>
                             <option>02</option>
                             <option>03</option>
@@ -282,7 +311,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="anoVencimento" class="form-label">Ano de vencimento
+                        <label for="anoVencimento" class="form-label">Ano de vencimento *
                             <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - 'YYYY')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -290,25 +319,12 @@
                                 </svg>
                             </code>
                         </label>
-                        <select class="form-select" name="anoVencimento" id="anoVencimento">
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option selected>2025</option>
-                            <option>2026</option>
-                            <option>2027</option>
-                            <option>2028</option>
-                            <option>2029</option>
-                            <option>2030</option>
-                            <option>2031</option>
-                            <option>2032</option>
-                            <option>2033</option>
-                            <option>2034</option>
-                            <option>2035</option>
+                        <select class="form-select" name="anoVencimento" id="anoVencimento" required>
                         </select>
                     </div>
 
                     <div class="col-md-4">
-                        <label for="cvv" class="form-label">Código de segurança (cvv)
+                        <label for="cvv" class="form-label">Código de segurança (cvv) *
                             <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - '123')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -316,7 +332,32 @@
                                 </svg>
                             </code>
                         </label>
-                        <input type="text" class="form-control" name="cvv" id="cvv">
+                        <input type="text" class="form-control" name="cvv" id="cvv" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="nomeTitular" class="form-label">Nome do titular do cartão *
+                            <code data-bs-toggle="tooltip" data-bs-placement="top" title="(String - 'Nome Sobrenome')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="nomeTitular" id="nomeTitular" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="documentoTitular" class="form-label">CPF/CNPJ do titular do cartão *
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="(String - CPF: '94271564656' ou CNPJ: '99794567000144')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="documentoTitular" id="documentoTitular" required>
                     </div>
 
                     <div class="col-md-12">

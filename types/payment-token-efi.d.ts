@@ -37,6 +37,8 @@ declare module "payment-token-efi" {
         cvv: string;
         expirationMonth: string;
         expirationYear: string;
+        holderName: string;
+        holderDocument: string;
         reuse: boolean;
       }
 

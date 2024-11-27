@@ -36,6 +36,8 @@ export default {
             cvv: '123',
             expirationMonth: '05',
             expirationYear: '2031',
+            holderName: "Gorbadoc Oldbuck",
+            holderDocument: "94271564656",
             reuse: false
           })
           .getPaymentToken();
