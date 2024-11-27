@@ -192,6 +192,8 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 	| -                 | cvv                                                              | string  | Sim         |
 	| -                 | expirationMonth `'MM'`                                           | string  | Sim         |
 	| -                 | expirationYear `'YYYY'`                                          | string  | Sim         |
+	| -                 | holderName `'Nome impresso no cartão'`               | string  | Não         |
+	| -                 | holderDocument `CPF ou CPNJ`               | string  | Não         |
 	| -                 | reuse                                                            | boolean | Não         |
 	| debugger          | Depurador de código                                              | boolean | Não         |
 
@@ -202,13 +204,15 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
       try {
         const result = await EfiPay.CreditCard
           .setAccount("Identificador_de_conta_aqui")
-          .setEnvironment("production") // 'production' or 'sandbox'
+          .setEnvironment("production")
           .setCreditCardData({
             brand: "visa",
             number: "4485785674290087",
             cvv: "123",
             expirationMonth: "05",
             expirationYear: "2029",
+            holderName: "Gorbadoc Oldbuck",
+            holderDocument: "94271564656",
             reuse: false,
           })
           .getPaymentToken();
