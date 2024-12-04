@@ -159,11 +159,11 @@
             });
 
             const populateYears = (selectId, range) => {
-                const currentYear = new Date().getFullYear();
+                const nextYear = new Date().getFullYear() + 1;
                 const selectElement = document.getElementById('anoVencimento');
 
                 for (let i = 0; i <= range; i++) {
-                    const year = currentYear + i;
+                    const year = nextYear + i;
                     const option = document.createElement("option");
                     option.value = year;
                     option.textContent = year;
