@@ -88,6 +88,10 @@ const EfiPay = require("payment-token-efi");
 ```
 _**Obs**: Esta biblioteca não é compatível no backend em Node.js_
 
+### **Frameworks com WebView (React Native e outros)**
+
+Para aplicações que não possuem DOM nativo, como React Native, Ionic, Swift,  e outros frameworks similares, é necessário utilizar um componente WebView para executar a biblioteca. O WebView permite que a biblioteca funcione corretamente, pois fornece um ambiente DOM para sua execução. [Disponibilizamos aqui](https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/examples/webview-react-native.js) um exemplo de demonstração com React Native.
+
 ### **Tipagens TypeScript**
 
 Se você estiver utilizando TypeScript, quando você instalar a biblioteca **payment-token-efi**, o TypeScript deve ser capaz de encontrar os tipos automaticamente localizados em `types/payment-token-efi.d.ts`
@@ -100,7 +104,8 @@ Este script oferece três funções para manipulação de dados de cartão de cr
 
 Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde encontrar</a>. 
 
-<br>
+Neste repositório, você encontra exemplos para usar a biblioteca. Confira esses exemplos [clicando aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
+
 
 ### **Identificar a bandeira**
 
