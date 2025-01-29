@@ -11,6 +11,7 @@ Esta biblioteca JavaScript permite uma solução segura e eficiente para manipul
   	- [**UMD**](#universal-module-definition-umd)
   	- [**ES Modules**](#ecmascript-modules-esm)
   	- [**CommonJS**](#commonjs-cjs)
+  - [**Framework React Native e outros (WebView)**](#framework-react-native-e-outros-webview)
   - [**Tipagens TypeScript**](#tipagens-typescript)
 - [**Utilização**](#utilização)
 	- [**Identificar a bandeira**](#identificar-a-bandeira)
@@ -88,7 +89,7 @@ const EfiPay = require("payment-token-efi");
 ```
 _**Obs**: Esta biblioteca não é compatível no backend em Node.js_
 
-### **Frameworks com WebView (React Native e outros)**
+### **Framework React Native e outros (WebView)**
 
 Para aplicações que não possuem DOM nativo, como React Native, Ionic, Swift,  e outros frameworks similares, é necessário utilizar um componente WebView para executar a biblioteca. O WebView permite que a biblioteca funcione corretamente, pois fornece um ambiente DOM para sua execução. [Disponibilizamos aqui](https://raw.githubusercontent.com/efipay/js-payment-token-efi/main/examples/webview-react-native.js) um exemplo de demonstração com React Native.
 
