@@ -1,6 +1,10 @@
 Changelog
 =========
 
+[Release 3.1.2](https://github.com/efipay/js-payment-token-efi/releases/tag/3.1.2) (2025-03-04)
+----------------------------------------------------------------------------------------------
+* Atualização para as rotas Efí
+
 [Release 3.1.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.1.1) (2025-01-28)
 ----------------------------------------------------------------------------------------------
 * Adicionado validação se o ambiente possui DOM
