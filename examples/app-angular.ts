@@ -25,8 +25,9 @@ export class AppComponent {
     this.loading = true;
 
     try {
-      const result = await EfiPay.CreditCard.debugger(true, true)
-        .setAccount("Identificador_de_conta_aqui")
+      const result = await EfiPay.CreditCard.setAccount(
+        "Identificador_de_conta_aqui"
+      )
         .setEnvironment("sandbox") // 'production' or 'sandbox'
         .setCreditCardData({
           brand: "visa",
