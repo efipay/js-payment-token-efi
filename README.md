@@ -14,11 +14,11 @@ Esta biblioteca JavaScript permite uma solução segura e eficiente para manipul
   - [**Framework React Native e outros (WebView)**](#framework-react-native-e-outros-webview)
   - [**Tipagens TypeScript**](#tipagens-typescript)
 - [**Utilização**](#utilização)
+	- [**Exemplos práticos**](#exemplos-práticos)
 	- [**Identificar a bandeira**](#identificar-a-bandeira)
 	- [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
 	- [**Gerar o payment_token e card_mask**](#gerar-o-payment_token-e-card_mask)
 	- [**Dados de saída em caso de falha**](#dados-de-saída-em-caso-de-falha)
-	- [**Exemplos práticos**](#exemplos-práticos)
 - [**Criação da cobrança**](#criação-da-cobrança)
 - [**Documentação Adicional**](#documentação-adicional)
 - [**Comunidade e suporte**](#comunidade-e-suporte)
@@ -101,11 +101,13 @@ Se você estiver utilizando TypeScript, quando você instalar a biblioteca **pay
 
 ## **Utilização**
 
-Este script oferece três funções para manipulação de dados de cartão de crédito. A primeira função permite <ins>**identificar a bandeira**</ins> do cartão a partir do seu número. A segunda função <ins>**busca informações de parcelamento**</ins> de acordo com as configurações de recebimento em sua conta. Por fim, a terceira função <ins>**gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)**</ins> com base nos dados do cartão.
+Este script oferece três funções para manipulação de dados de cartão de crédito. A primeira função permite <ins>**[identificar a bandeira](#identificar-a-bandeira)**</ins> do cartão a partir do seu número. A segunda função <ins>**[busca informações de parcelamento](#buscar-as-informações-de-parcelamento)**</ins> de acordo com as configurações de recebimento em sua conta. Por fim, a terceira função <ins>**[gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)](#gerar-o-payment_token-e-card_mask)**</ins> com base nos dados do cartão.
 
-Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital, no menu `API > Introdução > Identificador de Conta`. <a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>Veja onde encontrar</a>. 
+Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital (<a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>veja onde encontrar</a>), no menu `API > Introdução > Identificador de Conta`. 
 
-Neste repositório, você encontra exemplos para usar a biblioteca. Confira esses exemplos [clicando aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
+
+### Exemplos práticos
+Disponibilizamos alguns exemplos de utilização para as principais linguaguagens de progração front-end. [Acesse aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
 
 
 ### **Identificar a bandeira**
@@ -261,9 +263,6 @@ Neste repositório, você encontra exemplos para usar a biblioteca. Confira esse
   | error             | Nome do erro.                        | string |
   | error_description | Mensagem detalhando o erro ocorrido. | string |
 
-
-### Exemplos práticos
-Disponibilizamos alguns exemplos de utilização para as principais linguaguagens de progração front-end. [Acesse aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
 
 <br>
 
