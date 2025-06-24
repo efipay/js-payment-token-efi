@@ -1,6 +1,6 @@
 {
 	"name": "payment-token-efi",
-	"version": "3.1.2",
+	"version": "3.2.0",
 	"description": "Módulo Javascript que permite a criptografia dos dados do cartão do cartão a partir do browser do cliente para gerar o payment_token e identificar a bandeira do cartão.",
 	"keywords": [
 		"API",

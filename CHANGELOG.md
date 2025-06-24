@@ -1,6 +1,10 @@
 Changelog
 =========
 
+[Release 3.2.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.2.0) (2025-06-24)
+----------------------------------------------------------------------------------------------
+* Adicionado função de verificação de bloqueio do script de fingerprint
+
 [Release 3.1.2](https://github.com/efipay/js-payment-token-efi/releases/tag/3.1.2) (2025-03-04)
 ----------------------------------------------------------------------------------------------
 * Atualização para as rotas Efí
