@@ -15,6 +15,7 @@ Esta biblioteca JavaScript permite uma solução segura e eficiente para manipul
   - [**Tipagens TypeScript**](#tipagens-typescript)
 - [**Utilização**](#utilização)
 	- [**Exemplos práticos**](#exemplos-práticos)
+	- [**Verificar bloqueio do script**](#verificar-bloqueio-do-script)
 	- [**Identificar a bandeira**](#identificar-a-bandeira)
 	- [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
 	- [**Gerar o payment_token e card_mask**](#gerar-o-payment_token-e-card_mask)
@@ -110,7 +111,34 @@ Para utilizar esse script, é necessário passar o código **Identificador de Co
 Disponibilizamos alguns exemplos de utilização para as principais linguaguagens de progração front-end. [Acesse aqui](https://github.com/efipay/js-payment-token-efi/tree/main/examples).
 
 
+### **Verificar bloqueio do script**
+
+A função `isScriptBlocked()` verifica se o script de fingerprint, que ajuda a manter a segurança da transação ao coletar informações do pagador, está sendo bloqueado por alguma extensão ou configuração do navegador. A recomendação é executar essa função logo que a página de checkout carregar, assim é possível já identificar se houve bloqueio antes do cliente tentar fazer o pagamento.
+
+- **Exemplo:**
+
+  ```js
+  async function checkScriptBlocking() {
+    const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+
+    if (isBlocked) {
+      console.log("O script está bloqueado!");
+    } else {
+      console.log("O script não está bloqueado.");
+    }
+  }
+  ```
+
+- **Dados de saída:**
+
+  | Descrição                                                                    | Tipo    |
+  | ------------------------------------------------------------------------- | ------- |
+  |`true` se o script de fingerprint estiver bloqueado, `false` caso contrário. | boolean |
+
+
 ### **Identificar a bandeira**
+
+Função que identifica a bandeira do cartão pelo número, com base nas [bandeiras aceitas pelo Efí](https://dev.efipay.com.br/docs/api-cobrancas/cartao#confira-a-lista-de-cart%C3%B5es-de-cr%C3%A9dito-aceitos-pela-ef%C3%AD).
 
   - **Dados de entrada:**
 
@@ -146,6 +174,8 @@ Disponibilizamos alguns exemplos de utilização para as principais linguaguagen
 <br>
 
 ### **Buscar as informações de parcelamento**
+
+Função para buscar as informações de parcelamento de acordo com as [configurações de recebimento em sua conta](https://app.sejaefi.com.br/configuracoes-da-conta/configuracoes-de-cobrancas/cartao-de-credito).
 
   - **Dados de entrada:**
 
@@ -187,6 +217,8 @@ Disponibilizamos alguns exemplos de utilização para as principais linguaguagen
 <br>
 
 ### **Gerar o payment_token e card_mask**
+
+Função que gera o *payment_token*, um código criado pela API da Efí que representa os dados do cartão da pessoa pagadora, e também a *card_mask*, com base nas informações do cartão.
 
   - **Dados de entrada:**
 
