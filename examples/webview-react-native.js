@@ -16,6 +16,27 @@ const PaymentScreen = () => {
     </head>
     <body>
       <script>
+        async function checkScriptBlocking() {
+          const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+          if (isBlocked) {
+            console.log("O script de fingerprint está bloqueado.");
+            window.ReactNativeWebView.postMessage(
+              JSON.stringify({
+                error: {
+                  code: "script_blocked",
+                  name: "erro_script_bloqueado",
+                  message:
+                    "O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão.",
+                },
+              })
+            );
+          } else {
+            console.log("O script de fingerprint não está bloqueado.");
+          }
+        }
+
+        checkScriptBlocking();
+
         async function generateToken(data) {
           try {
             const result = await EfiPay.CreditCard

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import EfiPay from "../dist/payment-token-efi-esm.min.js";
 
 @Component({
@@ -16,10 +16,27 @@ import EfiPay from "../dist/payment-token-efi-esm.min.js";
   `,
   styles: [],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   paymentToken: string = "";
   cardMask: string = "";
   loading: boolean = false;
+
+  ngOnInit() {
+    this.checkScriptBlocking();
+  }
+
+  async checkScriptBlocking() {
+    const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+
+    if (isBlocked) {
+      console.log("O script de fingerprint está bloqueado.");
+      alert(
+        "O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão. "
+      );
+    } else {
+      console.log("O script de fingerprint não está bloqueado.");
+    }
+  }
 
   async runEfiJsCode() {
     this.loading = true;

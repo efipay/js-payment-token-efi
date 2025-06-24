@@ -7,6 +7,17 @@
     <title>Payment Token Efí</title>
     <script src="../dist/payment-token-efi-umd.min.js"></script>
     <script>
+        async function checkScriptBlocking() {
+            const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+            if (isBlocked) {
+                console.log("O script de fingerprint está bloqueado.");
+                alert("O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão. ")
+            } else {
+                console.log("O script de fingerprint não está bloqueado.");
+            }
+        }
+        checkScriptBlocking();
+
         async function generatePaymentToken() {
             try {
                 const result = await EfiPay.CreditCard

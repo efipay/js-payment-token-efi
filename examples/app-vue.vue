@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
   import EfiPay from '../dist/payment-token-efi-umd.min.js';
 
 export default {
@@ -20,6 +20,21 @@ export default {
     const paymentToken = ref('');
     const cardMask = ref('');
     const loading = ref(false);
+
+    const checkScriptBlocking = async () => {
+      const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+
+      if (isBlocked) {
+        console.log("O script de fingerprint está bloqueado.");
+        alert(
+          "O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão. "
+        );
+      } else {
+        console.log("O script de fingerprint não está bloqueado.");
+      }
+    };
+
+    onMounted(checkScriptBlocking);
 
     const runEfiJsCode = async () => {
       loading.value = true;

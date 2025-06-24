@@ -16,6 +16,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => { // Aguarda o carregamento da página para iniciar os scripts
+            // Valida se o script de fingerprint está bloqueado
+            async function checkScriptBlocking() {
+                const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+
+                if (isBlocked) {
+                    console.log("O script de fingerprint está bloqueado.");
+                    alert("O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão. ")
+                } else {
+                    console.log("O script de fingerprint não está bloqueado.");
+                }
+            }
+            checkScriptBlocking();
+
             // Configuração
             var inputIdentificadorConta = document.getElementById("identificadorConta");
             var inputValorTotal = document.getElementById("valorTotal");

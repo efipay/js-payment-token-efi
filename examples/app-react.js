@@ -1,11 +1,26 @@
-"use client";
-import { useState } from 'react';
+"use client"; // Keep this if it's a Next.js component
+import { useState, useEffect } from 'react'; // Added useEffect
 import EfiPay from '../dist/payment-token-efi-umd.min.js';
 
 const App = () => {
   const [paymentToken, setPaymentToken] = useState('');
   const [cardMask, setCardMask] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Add checkScriptBlocking function and call it on component mount
+  useEffect(() => {
+    async function checkScriptBlocking() {
+      const isBlocked = await EfiPay.CreditCard.isScriptBlocked();
+
+      if (isBlocked) {
+        console.log("O script de fingerprint está bloqueado.");
+        alert("O script que gera o payment_token está bloqueado. Verifique seu navegador ou extensão. ");
+      } else {
+        console.log("O script de fingerprint não está bloqueado.");
+      }
+    }
+    checkScriptBlocking();
+  }, []); // Empty dependency array ensures it runs once on mount
 
   const runEfiJsCode = async () => {
     setLoading(true);
