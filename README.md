@@ -102,7 +102,12 @@ Se você estiver utilizando TypeScript, quando você instalar a biblioteca **pay
 
 ## **Utilização**
 
-Este script oferece três funções para manipulação de dados de cartão de crédito. A primeira função permite <ins>**[identificar a bandeira](#identificar-a-bandeira)**</ins> do cartão a partir do seu número. A segunda função <ins>**[busca informações de parcelamento](#buscar-as-informações-de-parcelamento)**</ins> de acordo com as configurações de recebimento em sua conta. Por fim, a terceira função <ins>**[gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)](#gerar-o-payment_token-e-card_mask)**</ins> com base nos dados do cartão.
+Este script traz quatro funções que ajudam no processamento de dados de cartão de crédito:
+
+1. A primeira função permite <ins>**[verificar se o script foi bloqueado](#verificar-bloqueio-do-script)**</ins> por alguma extensão ou configuração do navegador.
+2. A segunda função <ins>**[identifica a bandeira do cartão](#identificar-a-bandeira)**</ins> a partir do número digitado.
+3. A terceira função <ins>**[busca as opções de parcelamento](#buscar-as-informações-de-parcelamento)**</ins> com base nas configurações da sua conta.
+4. E por fim, a quarta função <ins>**[gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)](#gerar-o-payment_token-e-card_mask)**</ins> usando os dados preenchidos.
 
 Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital (<a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>veja onde encontrar</a>), no menu `API > Introdução > Identificador de Conta`. 
 
