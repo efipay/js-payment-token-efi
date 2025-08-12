@@ -7,6 +7,7 @@ declare module "payment-token-efi" {
       function setAccount(accountIdentifier: string): typeof CreditCard;
       function setBrand(brand: string): typeof CreditCard;
       function setTotal(total: number): typeof CreditCard;
+      function isScriptBlocked(): Promise<boolean>;
       function getInstallments(): Promise<InstallmentsResponse | ErrorResponse>;
       function setCreditCardData(data: CreditCardData): typeof CreditCard;
       function getPaymentToken(): Promise<PaymentTokenResponse | ErrorResponse>;
