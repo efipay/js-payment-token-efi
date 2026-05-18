@@ -1,6 +1,14 @@
 Changelog
 =========
 
+[Release 3.3.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.3.0) (2026-04-30)
+----------------------------------------------------------------------------------------------
+* Adicionado métodos iniciais para implementação do pagamento com 3DS.
+
+[Release 3.2.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.2.1) (2025-08-12)
+----------------------------------------------------------------------------------------------
+* Adicionado tipagem da função que verifica bloqueio do script  
+
 [Release 3.2.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.2.0) (2025-06-24)
 ----------------------------------------------------------------------------------------------
 * Adicionado função de verificação de bloqueio do script de fingerprint
