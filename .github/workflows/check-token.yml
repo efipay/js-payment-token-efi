@@ -1,0 +1,25 @@
+name: Validar Expiração do NPM_TOKEN
+
+on:
+  schedule:
+    # Executa toda segunda-feira à meia-noite (horário UTC)
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar validade do token no NPM
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $NPM_TOKEN" https://registry.npmjs.org/-/whoami)
+          
+          if [ "$RESPONSE" -eq 200 ]; then
+            echo "✅ O NPM_TOKEN está válido e ativo."
+          else
+            echo "❌ O NPM_TOKEN expirou ou é inválido! Código HTTP: $RESPONSE"
+            echo "Gere um novo token no npmjs.com e atualize os Secrets do GitHub."
+            exit 1 # Gera uma notificação por e-mail
+          fi
