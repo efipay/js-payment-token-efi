@@ -1,5 +1,9 @@
 <h1>Script payment_token cartão de crédito | Efí</h1>
 
+[![NPM Version](https://img.shields.io/npm/v/payment-token-efi.svg)](https://www.npmjs.com/package/payment-token-efi)
+[![NPM Downloads](https://img.shields.io/npm/dm/payment-token-efi.svg)](https://www.npmjs.com/package/payment-token-efi)
+[![License](https://img.shields.io/npm/l/payment-token-efi.svg)](https://github.com/efipay/js-payment-token-efi/blob/main/LICENSE)
+
 Esta biblioteca JavaScript permite uma solução segura e eficiente para manipular dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no front-end da aplicação aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas. Também é possível identificar a bandeira do cartão e obter informações de parcelamento.
 
 **Ir para:**
@@ -56,6 +60,7 @@ Realize o [download da biblioteca](https://raw.githubusercontent.com/efipay/js-p
 ### **Gerenciador de pacote (NPM ou Yarn)**
 
 Se você estiver utilizando um gerenciador de pacotes como npm ou yarn, instale a biblioteca diretamente:
+Se você estiver utilizando um gerenciador de pacotes como npm ou yarn, instale a biblioteca diretamente ([acesse no NPM](https://www.npmjs.com/package/payment-token-efi)):
 
 ```sh
 npm install payment-token-efi
