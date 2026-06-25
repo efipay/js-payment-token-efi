@@ -2,6 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/payment-token-efi.svg)](https://www.npmjs.com/package/payment-token-efi)
 [![NPM Downloads](https://img.shields.io/npm/dm/payment-token-efi.svg)](https://www.npmjs.com/package/payment-token-efi)
+[![](https://data.jsdelivr.com/v1/package/npm/payment-token-efi/badge)](https://www.jsdelivr.com/package/npm/payment-token-efi)
 [![License](https://img.shields.io/npm/l/payment-token-efi.svg)](https://github.com/efipay/js-payment-token-efi/blob/main/LICENSE)
 
 Esta biblioteca JavaScript permite uma solução segura e eficiente para manipular dados de cartão de crédito em seus projetos. Além disso, a criptografia dos dados diretamente no front-end da aplicação aumenta a segurança da transação e protege as informações do cartão contra interceptações maliciosas. Também é possível identificar a bandeira do cartão e obter informações de parcelamento.
