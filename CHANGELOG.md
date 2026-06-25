@@ -1,9 +1,13 @@
 Changelog
 =========
 
+[Release 3.4.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.0) (2026-06-25)
+----------------------------------------------------------------------------------------------
+* Adicionado suporte ao novo formato alfanumérico de CNPJ
+
 [Release 3.3.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.3.0) (2026-04-30)
 ----------------------------------------------------------------------------------------------
-* Adicionado métodos iniciais para implementação do pagamento com 3DS.
+* Adicionado métodos iniciais para implementação do pagamento com 3DS
 
 [Release 3.2.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.2.1) (2025-08-12)
 ----------------------------------------------------------------------------------------------
