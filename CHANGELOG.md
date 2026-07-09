@@ -1,6 +1,10 @@
 Changelog
 =========
 
+[Release 3.4.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.1) (2026-07-09)
+----------------------------------------------------------------------------------------------
+* Corrigido comportamento do fingerprint 3DS para não interromper a geração do payment_token quando não houver conteúdo 3DS para injetar
+
 [Release 3.4.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.0) (2026-06-25)
 ----------------------------------------------------------------------------------------------
 * Adicionado suporte ao novo formato alfanumérico de CNPJ
