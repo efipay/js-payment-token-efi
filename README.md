@@ -24,6 +24,7 @@ Esta biblioteca JavaScript permite uma solução segura e eficiente para manipul
 	- [**Identificar a bandeira**](#identificar-a-bandeira)
 	- [**Buscar as informações de parcelamento**](#buscar-as-informações-de-parcelamento)
 	- [**Gerar o payment_token e card_mask**](#gerar-o-payment_token-e-card_mask)
+	- [**Obter o identificador 3DS (reutilizando um payment_token existente)**](#obter-o-identificador-3ds-reutilizando-um-payment_token-existente)
 	- [**Dados de saída em caso de falha**](#dados-de-saída-em-caso-de-falha)
 - [**Criação da cobrança**](#criação-da-cobrança)
 - [**Documentação Adicional**](#documentação-adicional)
@@ -108,12 +109,13 @@ Se você estiver utilizando TypeScript, quando você instalar a biblioteca **pay
 
 ## **Utilização**
 
-Este script traz quatro funções que ajudam no processamento de dados de cartão de crédito:
+Este script traz cinco funções que ajudam no processamento de dados de cartão de crédito:
 
 1. A primeira função permite <ins>**[verificar se o script foi bloqueado](#verificar-bloqueio-do-script)**</ins> por alguma extensão ou configuração do navegador.
 2. A segunda função <ins>**[identifica a bandeira do cartão](#identificar-a-bandeira)**</ins> a partir do número digitado.
 3. A terceira função <ins>**[busca as opções de parcelamento](#buscar-as-informações-de-parcelamento)**</ins> com base nas configurações da sua conta.
-4. E por fim, a quarta função <ins>**[gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)](#gerar-o-payment_token-e-card_mask)**</ins> usando os dados preenchidos.
+4. A quarta função <ins>**[gera o token de pagamento (payment_token) e a máscara do cartão (card_mask)](#gerar-o-payment_token-e-card_mask)**</ins> usando os dados preenchidos.
+5. E por fim, a quinta função permite <ins>**[obter o identificador 3DS reutilizando um payment_token existente](#obter-o-identificador-3ds-reutilizando-um-payment_token-existente)**</ins> — sem precisar informar os dados do cartão novamente — para iniciar uma nova verificação 3DS em uma nova transação.
 
 Para utilizar esse script, é necessário passar o código **Identificador de Conta** (payee_code) como parâmetro para gerar o payment_token dos dados do cartão de crédito. Você pode obter essa informação em sua conta digital (<a href='https://s3.amazonaws.com/gerencianet-pub-prod-1/printscreen/2023/03/08/matheus.rodrigues/24fa15-dda30019-a643-409e-8813-c7cc68adcc40.png' target='_blank'>veja onde encontrar</a>), no menu `API > Introdução > Identificador de Conta`. 
 
@@ -246,7 +248,11 @@ Função que gera o *payment_token*, um código criado pela API da Efí que repr
 	| -                 | holderName `'Nome impresso no cartão'`               | string  | Não         |
 	| -                 | holderDocument `CPF ou CPNJ`               | string  | Não         |
 	| -                 | reuse                                                            | boolean | Não         |
+	| -                 | enable3ds                                                        | boolean | Não         |
+	| -                 | totalValue `Valor total em centavos`                             | integer | Não *       |
 	| debugger          | Depurador de código                                              | boolean | Não         |
+
+  _* `totalValue` é obrigatório somente quando `enable3ds` for `true`._
 
   - **Exemplo:**
 
@@ -265,14 +271,18 @@ Função que gera o *payment_token*, um código criado pela API da Efí que repr
             holderName: "Gorbadoc Oldbuck",
             holderDocument: "94271564656",
             reuse: false,
+            enable3ds: true,   // opcional: habilita a autenticação 3DS Secure
+            totalValue: 28990, // obrigatório quando enable3ds for true (valor em centavos)
           })
           .getPaymentToken();
 
         const payment_token = result.payment_token;
         const card_mask = result.card_mask;
+        const tds_identifier = result.tds_identifier; // disponível quando enable3ds for true
 
         console.log("payment_token", payment_token);
         console.log("card_mask", card_mask);
+        console.log("tds_identifier", tds_identifier);
       } catch (error) {
         console.log("Código: ", error.code);
         console.log("Nome: ", error.error);
@@ -283,10 +293,51 @@ Função que gera o *payment_token*, um código criado pela API da Efí que repr
 
   - **Dados de saída:**
 
-	| Parâmetro     | Descrição                                            | Tipo   |
-	| ------------- | ---------------------------------------------------- | ------ |
-	| payment_token | Token de pagamento que representa o cartão utilizado | string |
-	| card_mask     | Máscara do cartão utilizado                          | string |
+	| Parâmetro      | Descrição                                                                                            | Tipo   |
+	| -------------- | ---------------------------------------------------------------------------------------------------- | ------ |
+	| payment_token  | Token de pagamento que representa o cartão utilizado                                                 | string |
+	| card_mask      | Máscara do cartão utilizado                                                                          | string |
+	| tds_identifier | Identificador para autenticação 3DS Secure. Retornado apenas quando `enable3ds` for `true`           | string |
+
+### **Obter o identificador 3DS (reutilizando um payment_token existente)**
+
+Função para inicializar o processo de autenticação 3DS Secure e obter um novo *tds_identifier* sem precisar informar os dados do cartão novamente. Utilize esse método nos casos em que o `payment_token` já foi gerado anteriormente, como por exemplo, ao reutilizar um cartão salvo, e você precisa iniciar uma nova verificação 3DS para uma nova transação, passando apenas o payment_token existente e o valor da nova cobrança.
+
+  - **Dados de entrada:**
+
+	| Parâmetro/Método | Descrição                               | Tipo    | Obrigatório |
+	| ---------------- | --------------------------------------- | ------- | ----------- |
+	| setAccount       | Identificador de conta                  | string  | Sim         |
+	| setEnvironment   | Ambiente. `"production"` ou `"sandbox"` | string  | Sim         |
+	| paymentToken     | Token de pagamento gerado anteriormente | string  | Sim         |
+	| totalValue       | Valor total da cobrança em centavos     | integer | Sim         |
+
+  - **Exemplo:**
+
+    ```js
+    async function get3dsIdentifier() {
+      try {
+        const result = await EfiPay.CreditCard
+          .setAccount("Identificador_de_conta_aqui")
+          .setEnvironment("production")
+          .get3dsIdentifier("payment_token_aqui", 28990);
+
+        console.log("tds_identifier:", result.tds_identifier);
+      } catch (error) {
+        console.log("Código: ", error.code);
+        console.log("Nome: ", error.error);
+        console.log("Mensagem: ", error.error_description);
+      }
+    }
+    ```
+
+  - **Dados de saída:**
+
+	| Parâmetro      | Descrição                                                | Tipo   |
+	| -------------- | -------------------------------------------------------- | ------ |
+	| tds_identifier | Identificador para o processo de autenticação 3DS Secure | string |
+
+<br>
 
 ### **Ativar debbuger**
 
