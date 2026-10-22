@@ -46,6 +46,8 @@
             var inputParcelas = document.getElementById("opcoesParcelamento");
             var inputPaymentToken = document.getElementById("paymentToken");
             var inputmascaraCartao = document.getElementById("mascaraCartao");
+            var inputTdsIdentifier = document.getElementById("tdsIdentifier");
+            var tdsIdentifierGroup = document.getElementById("tdsIdentifierGroup");
 
             // Botão de acionamento
             var btnGerarToken = document.getElementById("gerarPaymentToken");
@@ -120,18 +122,26 @@
                 * @params { identificadorConta, ambiente, {bandeira, numeroCartao, cvv, mesVencimento, anoVencimento, reuse} }
                 */
                 try {
+                    const creditCardData = {
+                        brand: inputBandeira.value,
+                        number: inputNumeroCartao.value,
+                        cvv: inputCvv.value,
+                        expirationMonth: inputMesVencimento.value,
+                        expirationYear: inputAnoVencimento.value,
+                        holderName: inputNomeTitular.value,
+                        holderDocument: inputDocumentoTitular.value,
+                        reuse: false,
+                        enable3ds: inputEnable3ds.checked
+                    };
+
+                    // Com 3DS ativo, envia o valor total (em centavos) no campo totalValue
+                    if (inputEnable3ds.checked) {
+                        creditCardData.totalValue = parseInt(inputValorTotal.value);
+                    }
+
                     const resultPaymentToken = await efi
                         .setAccount(inputIdentificadorConta.value)
-                        .setCreditCardData({
-                            brand: inputBandeira.value,
-                            number: inputNumeroCartao.value,
-                            cvv: inputCvv.value,
-                            expirationMonth: inputMesVencimento.value,
-                            expirationYear: inputAnoVencimento.value,
-                            holderName: inputNomeTitular.value,
-                            holderDocument: inputDocumentoTitular.value,
-                            reuse: false
-                        })
+                        .setCreditCardData(creditCardData)
                         .getPaymentToken();
 
                     let payment_token = resultPaymentToken.payment_token;
@@ -139,6 +149,15 @@
 
                     inputPaymentToken.value = payment_token;
                     mascaraCartao.value = card_mask;
+
+                    // Com 3DS ativo, exibe o tds_identifier retornado pelo fingerprint
+                    if (inputEnable3ds.checked) {
+                        inputTdsIdentifier.value = resultPaymentToken.tds_identifier || 'Script 3DS não retornou um identificador.';
+                        tdsIdentifierGroup.classList.remove('d-none');
+                    } else {
+                        inputTdsIdentifier.value = '';
+                        tdsIdentifierGroup.classList.add('d-none');
+                    }
 
                     btnGerarToken.classList.remove('btn-primary');
                     btnGerarToken.classList.add('btn-success');
@@ -184,6 +203,31 @@
                 }
             }
             populateYears('anoVencimento', 10);
+
+            /*
+            * 3DS: slider para ativar/desativar a autenticação 3DS (desativado por padrão)
+            */
+            var inputEnable3ds = document.getElementById("enable3ds");
+            var chip3ds = document.querySelector('.sandbox-card[data-chip3ds="true"]');
+
+            const updateChip3dsVisibility = () => {
+                // O cartão de desafio 3DS só aparece com o 3DS ativado
+                if (chip3ds) chip3ds.style.display = inputEnable3ds.checked ? '' : 'none';
+            };
+
+            inputEnable3ds.addEventListener("change", updateChip3dsVisibility);
+            updateChip3dsVisibility(); // estado inicial (3DS desativado)
+
+            /*
+            * Cartões de teste: ao clicar, preenche o número e dispara a identificação da bandeira
+            */
+            document.querySelectorAll('.sandbox-card').forEach(card => {
+                card.addEventListener("click", function () {
+                    inputNumeroCartao.value = card.dataset.number;
+                    inputNumeroCartao.dispatchEvent(new Event('input', { bubbles: true }));
+                    inputNumeroCartao.focus();
+                });
+            });
         });
     </script>
 
@@ -259,6 +303,21 @@
                         <input type="number" class="form-control" name="valorTotal" id="valorTotal" value="24990"
                             required>
                     </div>
+                    <div class="col-md-12 mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="enable3ds">
+                            <label class="form-check-label" for="enable3ds">
+                                Autenticação 3DS (enable3ds)
+                                <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Quando ativo, o SDK executa o fingerprint 3DS e retorna o tds_identifier">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                </code>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <!-- Fim - Configuração para funcionamento do script - Identificador de conta  -->
 
@@ -284,6 +343,45 @@
                             </code>
                         </label>
                         <input type="text" class="form-control" name="numeroCartao" id="numeroCartao" required>
+
+                        <!-- Cartões de teste para simulação (sandbox) -->
+                        <div class="card border-info mt-2" id="sandboxCards" style="background-color: transparent;">
+                            <div class="card-body py-2 px-3">
+                                <p class="mb-2 text-info fw-bold small text-uppercase">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-credit-card-2-front" viewBox="0 0 16 16">
+                                        <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 2.5a.5.5 0 0 0 .5.5H3a.5.5 0 0 0 0-1h-.5a.5.5 0 0 0-.5.5zm2 0a.5.5 0 0 0 .5.5H5a.5.5 0 0 0 0-1h-.5a.5.5 0 0 0-.5.5z"/>
+                                    </svg>
+                                    Cartões de teste · Sandbox
+                                </p>
+                                <div class="d-flex flex-wrap gap-2" id="sandboxCardsList">
+                                    <button type="button" class="btn btn-sm btn-outline-warning text-start sandbox-card" data-number="5191580148910820" data-chip3ds="true">
+                                        <span class="font-monospace fw-bold d-block">5191 5801 4891 0820</span>
+                                        <small>⏳ waiting · Desafio 3DS</small>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger text-start sandbox-card" data-number="5171621681580101">
+                                        <span class="font-monospace fw-bold d-block">5171 6216 8158 0101</span>
+                                        <small>✗ unpaid · Dados inválidos</small>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger text-start sandbox-card" data-number="5151037004660492">
+                                        <span class="font-monospace fw-bold d-block">5151 0370 0466 0492</span>
+                                        <small>✗ unpaid · Motivos de segurança</small>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger text-start sandbox-card" data-number="5517829646552353">
+                                        <span class="font-monospace fw-bold d-block">5517 8296 4655 2353</span>
+                                        <small>✗ unpaid · Tente mais tarde</small>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-success text-start sandbox-card" data-number="5161573914275599">
+                                        <span class="font-monospace fw-bold d-block">5161 5739 1427 5599</span>
+                                        <small>✓ approved · Aprovada</small>
+                                    </button>
+                                </div>
+                                <small class="text-muted d-block mt-2">
+                                    Regra pelo último dígito: <strong>0</strong> waiting (3DS) ·
+                                    <strong>1-3</strong> unpaid · <strong>4-9</strong> aprovado
+                                </small>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-5">
@@ -426,6 +524,20 @@
                     <div class="col-md-6"> <!-- Input que receberá o card_mask gerado -->
                         <label for="mascaraCartao" class="form-label">Máscara do cartão</label>
                         <input type="text" class="form-control" name="mascaraCartao" id="mascaraCartao" readonly>
+                    </div>
+
+                    <!-- Input que receberá o tds_identifier (visível apenas com 3DS ativo) -->
+                    <div class="col-md-12 d-none" id="tdsIdentifierGroup">
+                        <label for="tdsIdentifier" class="form-label">Identificador 3DS (tds_identifier)
+                            <code data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Retornado pelo fingerprint 3DS quando enable3ds está ativo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+                            </code>
+                        </label>
+                        <input type="text" class="form-control" name="tdsIdentifier" id="tdsIdentifier" readonly>
                     </div>
                 </div>
 
