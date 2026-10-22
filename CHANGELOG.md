@@ -1,9 +1,13 @@
 Changelog
 =========
 
-[Release 3.4.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.1) (2026-07-09)
+[Release 3.5.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.5.0) ()
 ----------------------------------------------------------------------------------------------
-* Corrigido comportamento do fingerprint 3DS para não interromper a geração do payment_token quando não houver conteúdo 3DS para injetar
+* Atualizações em métodos para implementação do pagamento com 3DS
+
+[Release 3.4.1](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.1) (2026-07-08)
+----------------------------------------------------------------------------------------------
+* Corrigido para quando não houver fingerprint 3DS, não interromper a geração do payment_token
 
 [Release 3.4.0](https://github.com/efipay/js-payment-token-efi/releases/tag/3.4.0) (2026-06-25)
 ----------------------------------------------------------------------------------------------
